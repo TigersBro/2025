@@ -26,8 +26,8 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
+  private final CommandPS5Controller m_driverController =
+      new CommandPS5Controller(OperatorConstants.DRIVER_CONTROLLER_PORT);
   // You can remove this if you wish to have a single driver, note that you
   // may have to change the binding for left bumper.
   private final CommandXboxController m_operatorController = 
@@ -74,7 +74,7 @@ public class RobotContainer {
      * 
      * When switching to single driver mode switch to the B button
      */
-    m_driverController.leftBumper().whileTrue(new DriveCommand(m_drive, 
+    m_driverController.L1().whileTrue(new DriveCommand(m_drive, 
         () -> -m_driverController.getLeftY() * DriveConstants.SLOW_MODE_MOVE,  
         () -> -m_driverController.getRightX() * DriveConstants.SLOW_MODE_TURN,
         () -> true));
