@@ -47,6 +47,9 @@ public final class Constants {
     public static final double ARM_SPEED_UP = -0.4;
     public static final double ARM_HOLD_DOWN = 0.1;
     public static final double ARM_HOLD_UP = -0.15;
+    public static final int ARM_UPPER_LIMIT_ID = 0;
+    public static final int ARM_LOWER_LIMIT_ID = 1;
+    public static final int ARM_MOTOR_STOP = 0;
   }
 
   public static final class ClimberConstants {

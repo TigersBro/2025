@@ -6,14 +6,26 @@ package frc.robot;
 
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.autos.DriveForwardAuto;
+import frc.robot.autos.SimpleCoralAuto;
+import frc.robot.commands.AlgieInCommand;
+import frc.robot.commands.AlgieOutCommand;
+import frc.robot.commands.ArmDownCommand;
+import frc.robot.commands.ArmUpCommand;
+import frc.robot.commands.ClimberDownCommand;
+import frc.robot.commands.ClimberUpCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.RollerSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -26,14 +38,21 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final CommandPS5Controller m_driverController =
-      new CommandPS5Controller(OperatorConstants.DRIVER_CONTROLLER_PORT);
+  private final CommandJoystick m_driverController =
+      new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);
   // You can remove this if you wish to have a single driver, note that you
   // may have to change the binding for left bumper.
-  private final CommandXboxController m_operatorController = 
-      new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
+  private final CommandPS5Controller m_operatorController = 
+      new CommandPS5Controller(OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
+  public final RollerSubsystem m_roller = new RollerSubsystem();
+  public final ArmSubsystem m_arm = new ArmSubsystem();
   public final DriveSubsystem m_drive = new DriveSubsystem();
+  public final ClimberSubsystem m_climber = new ClimberSubsystem();
+
+  public final SimpleCoralAuto m_simpleCoralAuto = new SimpleCoralAuto(m_drive, m_roller, m_arm);
+  public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive);
+
   
   public RobotContainer() {
     // Configure the trigger bindings
@@ -61,8 +80,8 @@ public class RobotContainer {
      * joystick matches the WPILib convention of counter-clockwise positive
      */
     m_drive.setDefaultCommand(new DriveCommand(m_drive,
-        () -> -m_driverController.getLeftY(),
-        () -> -m_driverController.getRightX(),
+        () -> -m_driverController.getY(),
+        () -> -m_driverController.getZ(),
         () -> true));
 
     /**
@@ -74,15 +93,30 @@ public class RobotContainer {
      * 
      * When switching to single driver mode switch to the B button
      */
-    m_driverController.L1().whileTrue(new DriveCommand(m_drive, 
-        () -> -m_driverController.getLeftY() * DriveConstants.SLOW_MODE_MOVE,  
-        () -> -m_driverController.getRightX() * DriveConstants.SLOW_MODE_TURN,
+    m_driverController.button(2).whileTrue(new DriveCommand(m_drive, 
+        () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,  
+        () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
         () -> true));
 
+
+    m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));
+    m_operatorController.R2().whileTrue(new AlgieOutCommand(m_roller));
+
     /**
-     * Here we declare all of our operator commands, these commands could have been
-     * written in a more compact manner but are left verbose so the intent is clear.
+     * The arm will be passively held up or down after this is used,
+     * make sure not to run the arm too long or it may get upset!
      */
+    m_operatorController.L1().whileTrue(new ArmUpCommand(m_arm));
+    m_operatorController.R1().whileTrue(new ArmDownCommand(m_arm));
+    
+    m_operatorController.pov(0).whileTrue(new ClimberUpCommand(m_climber));
+    m_operatorController.pov(180).whileTrue(new ClimberDownCommand(m_climber));
+    
+
+
+     //* Here we declare all of our operator commands, these commands could have been
+    // * written in a more compact manner but are left verbose so the intent is clear.
+    // */
 
   }
 
