@@ -51,6 +51,8 @@ public final class Constants {
     public static final int ARM_LOWER_LIMIT_ID = 1;
     public static final int ARM_LOWER_LIMIT_MAG_ID = 8;
     public static final int ARM_MOTOR_STOP = 0;
+    public static final String ARM_DOWN_DIRECTION_STRING = "DOWN";
+    public static final String ARM_UP_DIRECTION_STRING = "UP";
   }
 
   public static final class ClimberConstants {
@@ -65,4 +67,9 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
     public static final int OPERATOR_CONTROLLER_PORT = 1;
   }
+  public static final class ShuffleBoard9638Constants {
+    public static final String DEFAULT_TAB = "Test";
+    }
+
+
 }

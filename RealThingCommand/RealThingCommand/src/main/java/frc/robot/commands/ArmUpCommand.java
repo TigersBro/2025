@@ -32,7 +32,11 @@ public class ArmUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.runArm(ArmConstants.ARM_SPEED_UP);
+    if (m_arm.can_we_go_up() )
+    {
+      m_arm.setArmDirection( ArmConstants.ARM_UP_DIRECTION_STRING);
+      m_arm.runArm(ArmConstants.ARM_SPEED_UP);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -40,7 +44,8 @@ public class ArmUpCommand extends Command {
   // not drop due to gravity.
   @Override
   public void end(boolean interrupted) {
-    m_arm.runArm(ArmConstants.ARM_HOLD_UP);
+    
+      m_arm.runArm(ArmConstants.ARM_HOLD_UP);
   }
 
   // Returns true when the command should end.

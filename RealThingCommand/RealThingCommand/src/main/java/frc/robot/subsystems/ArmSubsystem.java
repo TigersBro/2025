@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -11,15 +12,17 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.ShuffleBoard9638;
 import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-DigitalInput toplimitSwitch = new DigitalInput(Constants.ArmConstants.ARM_UPPER_LIMIT_ID);
-DigitalInput bottomlimitSwitch = new DigitalInput(Constants.ArmConstants.ARM_LOWER_LIMIT_ID);
-DigitalInput bottomlimitSwitchMag = new DigitalInput(Constants.ArmConstants.ARM_LOWER_LIMIT_MAG_ID);
+//DigitalInput toplimitSwitch = new DigitalInput(Constants.ArmConstants.ARM_UPPER_LIMIT_ID);
+//DigitalInput bottomlimitSwitch = new DigitalInput(Constants.ArmConstants.ARM_LOWER_LIMIT_ID);
+DigitalInput limitSwitchMag = new DigitalInput(Constants.ArmConstants.ARM_LOWER_LIMIT_MAG_ID);
     private final SparkMax armMotor;
     private final RelativeEncoder armEncoder;
+    public static String lastArmDirection; 
     /**
      * This subsytem that controls the arm.
      */
@@ -56,20 +59,37 @@ DigitalInput bottomlimitSwitchMag = new DigitalInput(Constants.ArmConstants.ARM_
      */
     public void runArm(double speed){
     
-    armEncoder.getPosition();
+    ShuffleBoard9638.addDouble("Encoders", "Arm Encoder", armEncoder.getPosition() );
     armMotor.set(speed);
     
+    }
+    public void setArmDirection( String direction )
+    {
+      ShuffleBoard9638.addString("Arm Direction", direction);
+      lastArmDirection = direction;
+    }
+    public boolean can_we_go_up()
+    {
+      if( lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_UP_DIRECTION_STRING))
+      {
+        if( limitSwitchMag.get())
+        {  
+          return false;
+        }
+      }
+      return true;
 
- //   if (toplimitSwitch.get() || bottomlimitSwitch.get() ){ 
- //       armMotor.set(Constants.ArmConstants.ARM_MOTOR_STOP);    
- //   }
- //   else{
- //       armMotor.set(speed);
- //   }
- //   if (bottomlimitSwitchMag.get())
-  //  {
-  //      armMotor.set(Constants.ArmConstants.ARM_MOTOR_STOP);
-  //  }
-    
+    }
+    public boolean can_we_go_down()
+    {
+      if( lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_DOWN_DIRECTION_STRING))
+      {
+        if( limitSwitchMag.get())
+        {  
+          return false;
+        }
+      }
+      return true;
+
     }
 }
