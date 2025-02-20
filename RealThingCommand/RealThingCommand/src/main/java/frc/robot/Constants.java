@@ -18,7 +18,7 @@ package frc.robot;
  */
 public final class Constants {
   public static final class DriveConstants {
-    public static final int LEFT_LEADER_ID = 5;
+    public static final int LEFT_LEADER_ID = 8;
     public static final int LEFT_FOLLOWER_ID = 2;
     public static final int RIGHT_LEADER_ID = 3;
     public static final int RIGHT_FOLLOWER_ID = 4;
@@ -34,8 +34,8 @@ public final class Constants {
     public static final int ROLLER_MOTOR_CURRENT_LIMIT = 60;
     public static final double ROLLER_MOTOR_VOLTAGE_COMP = 10;
     public static final double ROLLER_CORAL_OUT = -.4;
-    public static final double ROLLER_ALGAE_IN = -0.8;
-    public static final double ROLLER_ALGAE_OUT = 0.4;
+    public static final double ROLLER_ALGAE_IN = -0.2;
+    public static final double ROLLER_ALGAE_OUT = 0.2;
     public static final double ROLLER_CORAL_STACK = -1;
   }
 
@@ -43,12 +43,13 @@ public final class Constants {
     public static final int ARM_MOTOR_ID = 6;
     public static final int ARM_MOTOR_CURRENT_LIMIT = 60;
     public static final double ARM_MOTOR_VOLTAGE_COMP = 10;
-    public static final double ARM_SPEED_DOWN = 0.4;
-    public static final double ARM_SPEED_UP = -0.4;
-    public static final double ARM_HOLD_DOWN = 0.1;
-    public static final double ARM_HOLD_UP = -0.15;
+    public static final double ARM_SPEED_DOWN = 0.08;
+    public static final double ARM_SPEED_UP = -0.08;
+    public static final double ARM_HOLD_DOWN = 0.01;
+    public static final double ARM_HOLD_UP = -0.01;
     public static final int ARM_UPPER_LIMIT_ID = 0;
     public static final int ARM_LOWER_LIMIT_ID = 1;
+    public static final int ARM_LOWER_LIMIT_MAG_ID = 8;
     public static final int ARM_MOTOR_STOP = 0;
   }
 

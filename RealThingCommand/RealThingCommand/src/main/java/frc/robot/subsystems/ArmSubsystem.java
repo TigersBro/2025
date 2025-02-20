@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -16,8 +17,9 @@ public class ArmSubsystem extends SubsystemBase {
 
 DigitalInput toplimitSwitch = new DigitalInput(Constants.ArmConstants.ARM_UPPER_LIMIT_ID);
 DigitalInput bottomlimitSwitch = new DigitalInput(Constants.ArmConstants.ARM_LOWER_LIMIT_ID);
+DigitalInput bottomlimitSwitchMag = new DigitalInput(Constants.ArmConstants.ARM_LOWER_LIMIT_MAG_ID);
     private final SparkMax armMotor;
-    
+    private final RelativeEncoder armEncoder;
     /**
      * This subsytem that controls the arm.
      */
@@ -40,6 +42,7 @@ DigitalInput bottomlimitSwitch = new DigitalInput(Constants.ArmConstants.ARM_LOW
     armConfig.smartCurrentLimit(ArmConstants.ARM_MOTOR_CURRENT_LIMIT);
     armConfig.idleMode(IdleMode.kBrake);
     armMotor.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    armEncoder = armMotor.getEncoder();
     }
 
     @Override
@@ -53,12 +56,20 @@ DigitalInput bottomlimitSwitch = new DigitalInput(Constants.ArmConstants.ARM_LOW
      */
     public void runArm(double speed){
     
-    if (toplimitSwitch.get() || bottomlimitSwitch.get() ){ 
-        armMotor.set(Constants.ArmConstants.ARM_MOTOR_STOP);    
-    }
-    else{
-        armMotor.set(speed);
-    }
+    armEncoder.getPosition();
+    armMotor.set(speed);
+    
+
+ //   if (toplimitSwitch.get() || bottomlimitSwitch.get() ){ 
+ //       armMotor.set(Constants.ArmConstants.ARM_MOTOR_STOP);    
+ //   }
+ //   else{
+ //       armMotor.set(speed);
+ //   }
+ //   if (bottomlimitSwitchMag.get())
+  //  {
+  //      armMotor.set(Constants.ArmConstants.ARM_MOTOR_STOP);
+  //  }
     
     }
 }

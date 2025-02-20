@@ -47,11 +47,11 @@ public class RobotContainer {
 
   public final RollerSubsystem m_roller = new RollerSubsystem();
   public final ArmSubsystem m_arm = new ArmSubsystem();
-  public final DriveSubsystem m_drive = new DriveSubsystem();
-  public final ClimberSubsystem m_climber = new ClimberSubsystem();
+//comment in  public final DriveSubsystem m_drive = new DriveSubsystem();
+//comment in  public final ClimberSubsystem m_climber = new ClimberSubsystem();
 
-  public final SimpleCoralAuto m_simpleCoralAuto = new SimpleCoralAuto(m_drive, m_roller, m_arm);
-  public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive);
+//comment in  public final SimpleCoralAuto m_simpleCoralAuto = new SimpleCoralAuto(m_drive, m_roller, m_arm);
+ //comment in public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive);
 
   
   public RobotContainer() {
@@ -79,10 +79,10 @@ public class RobotContainer {
      * value). Similarly for the X axis where we need to flip the value so the
      * joystick matches the WPILib convention of counter-clockwise positive
      */
-    m_drive.setDefaultCommand(new DriveCommand(m_drive,
-        () -> -m_driverController.getY(),
-        () -> -m_driverController.getZ(),
-        () -> true));
+  //comment in  m_drive.setDefaultCommand(new DriveCommand(m_drive,
+     //comment in   () -> -m_driverController.getY(),
+     //comment in   () -> -m_driverController.getZ(),
+      //comment in  () -> true));
 
     /**
      * Holding the left bumper (or whatever button you assign) will multiply the speed
@@ -93,14 +93,14 @@ public class RobotContainer {
      * 
      * When switching to single driver mode switch to the B button
      */
-    m_driverController.button(2).whileTrue(new DriveCommand(m_drive, 
-        () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,  
-        () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
-        () -> true));
+  //comment in  m_driverController.button(2).whileTrue(new DriveCommand(m_drive, 
+     //comment in   () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,  
+      //comment in  () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
+      //comment in  () -> true));
 
 
-    m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));
-    m_operatorController.R2().whileTrue(new AlgieOutCommand(m_roller));
+   m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));
+   m_operatorController.R2().whileTrue(new AlgieOutCommand(m_roller));
 
     /**
      * The arm will be passively held up or down after this is used,
@@ -109,8 +109,8 @@ public class RobotContainer {
     m_operatorController.L1().whileTrue(new ArmUpCommand(m_arm));
     m_operatorController.R1().whileTrue(new ArmDownCommand(m_arm));
     
-    m_operatorController.pov(0).whileTrue(new ClimberUpCommand(m_climber));
-    m_operatorController.pov(180).whileTrue(new ClimberDownCommand(m_climber));
+  //comment in  m_operatorController.pov(0).whileTrue(new ClimberUpCommand(m_climber));
+  //comment in  m_operatorController.pov(180).whileTrue(new ClimberDownCommand(m_climber));
     
 
 
