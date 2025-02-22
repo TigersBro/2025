@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.RollerConstants;
+import frc.robot.ShuffleBoard9638;
 import frc.robot.subsystems.RollerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -13,7 +14,7 @@ public class AlgieOutCommand extends Command {
   private final RollerSubsystem m_roller;
 
   /**
-   * Rolls the Algae out of the intake. 
+   * Rolls the Algae out of the intake.
    * We recommend not using this to score coral.
    *
    * @param roller The subsystem used by this command.
@@ -26,15 +27,19 @@ public class AlgieOutCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    ShuffleBoard9638.addString("button", "algie out");
+
     m_roller.runRoller(RollerConstants.ROLLER_ALGAE_OUT);
   }
 
-  // Called once the command ends or is interrupted. This ensures the roller is not running when not intented.
+  // Called once the command ends or is interrupted. This ensures the roller is
+  // not running when not intented.
   @Override
   public void end(boolean interrupted) {
     m_roller.runRoller(0);

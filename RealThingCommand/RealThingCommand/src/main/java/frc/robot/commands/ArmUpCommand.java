@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.ArmConstants;
+import frc.robot.ShuffleBoard9638;
 import frc.robot.subsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -32,7 +33,8 @@ public class ArmUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_arm.can_we_go_up() )
+   ShuffleBoard9638.addString("button","arm up");
+ if (m_arm.can_we_go_up() )
     {
       m_arm.setArmDirection( ArmConstants.ARM_UP_DIRECTION_STRING);
       m_arm.runArm(ArmConstants.ARM_SPEED_UP);

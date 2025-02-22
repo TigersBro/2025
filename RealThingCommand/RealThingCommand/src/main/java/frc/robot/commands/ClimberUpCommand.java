@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.ShuffleBoard9638;
 import frc.robot.subsystems.ClimberSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -30,7 +31,8 @@ public class ClimberUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_climber.runClimber(ClimberConstants.CLIMBER_SPEED_UP);
+ ShuffleBoard9638.addString("button","climber up");
+   m_climber.runClimber(ClimberConstants.CLIMBER_SPEED_UP);
   }
 
   // Called once the command ends or is interrupted.. Here we ensure the climber is not
