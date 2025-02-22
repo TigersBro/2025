@@ -69,6 +69,7 @@ public final class Constants {
   }
   public static final class ShuffleBoard9638Constants {
     public static final String DEFAULT_TAB = "Test";
+    public static final int UPDATE_PERIOD = 3; //Update variables from Shuffleboard every 3 seconds
     }
 
 
