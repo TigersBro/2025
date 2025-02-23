@@ -32,14 +32,16 @@ public class ShuffleBoard9638 {
     public static void addDouble(
             String name,
             Double addDouble) {
-        Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB).addDouble(name, () -> addDouble);
+        // Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB).addDouble(name, addDouble).;
+        
     }
 
     // Add a String to Shuffleboard
     public static void addString(String name,
-            String addString) {
+                                String addString) 
+    {
         ShuffleboardTab tab = Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB);
-        tab.add(name, addString);
+        tab.add(name,addString).getEntry();
 
         // Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB).getTitle("button").addString(name,
         // () -> addString.toString());
@@ -52,8 +54,8 @@ public class ShuffleBoard9638 {
             tabname = Constants.ShuffleBoard9638Constants.DEFAULT_TAB;
         }
         ShuffleboardTab tab = Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB);
-        tab.add(name, addString);
-    
+        tab.add(name, addString).getEntry();
+        
         //Shuffleboard.getTab(tab).addString(name, addString.toString());
     }
 

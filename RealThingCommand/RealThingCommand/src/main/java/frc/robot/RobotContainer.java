@@ -25,11 +25,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
@@ -38,40 +43,42 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final CommandJoystick m_driverController =
-      new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);
+  private final CommandJoystick m_driverController = new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);
   // You can remove this if you wish to have a single driver, note that you
   // may have to change the binding for left bumper.
-  private final CommandPS5Controller m_operatorController = 
-      new CommandPS5Controller(OperatorConstants.OPERATOR_CONTROLLER_PORT);
+  private final CommandPS5Controller m_operatorController = new CommandPS5Controller(
+      OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
   public final RollerSubsystem m_roller = new RollerSubsystem();
   public final ArmSubsystem m_arm = new ArmSubsystem();
-//comment in  public final DriveSubsystem m_drive = new DriveSubsystem();
-//comment in  public final ClimberSubsystem m_climber = new ClimberSubsystem();
+  public final DriveSubsystem m_drive = new DriveSubsystem();
+  public final ClimberSubsystem m_climber = new ClimberSubsystem();
 
-//comment in  public final SimpleCoralAuto m_simpleCoralAuto = new SimpleCoralAuto(m_drive, m_roller, m_arm);
- //comment in public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive);
+  public final SimpleCoralAuto m_simpleCoralAuto = new SimpleCoralAuto(m_drive, m_roller, m_arm);
+  public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive);
 
-  
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
   private void configureBindings() {
 
-
-    /** 
+    /**
      * Set the default command for the drive subsystem to an instance of the
      * DriveCommand with the values provided by the joystick axes on the driver
      * controller. The Y axis of the controller is inverted so that pushing the
@@ -79,28 +86,29 @@ public class RobotContainer {
      * value). Similarly for the X axis where we need to flip the value so the
      * joystick matches the WPILib convention of counter-clockwise positive
      */
-  //comment in  m_drive.setDefaultCommand(new DriveCommand(m_drive,
-     //comment in   () -> -m_driverController.getY(),
-     //comment in   () -> -m_driverController.getZ(),
-      //comment in  () -> true));
+    m_drive.setDefaultCommand(new DriveCommand(m_drive,
+        () -> -m_driverController.getY(),
+        () -> -m_driverController.getZ(),
+        () -> true));
 
     /**
-     * Holding the left bumper (or whatever button you assign) will multiply the speed
-     * by a decimal to limit the max speed of the robot -> 
-     * 1 (100%) from the controller * .9 = 90% of the max speed when held (we also square it)
+     * Holding the left bumper (or whatever button you assign) will multiply the
+     * speed
+     * by a decimal to limit the max speed of the robot ->
+     * 1 (100%) from the controller * .9 = 90% of the max speed when held (we also
+     * square it)
      * 
-     * Slow mode is very valuable for line ups and the deep climb 
+     * Slow mode is very valuable for line ups and the deep climb
      * 
      * When switching to single driver mode switch to the B button
      */
-  //comment in  m_driverController.button(2).whileTrue(new DriveCommand(m_drive, 
-     //comment in   () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,  
-      //comment in  () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
-      //comment in  () -> true));
+    m_driverController.button(2).whileTrue(new DriveCommand(m_drive,
+        () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,
+        () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
+        () -> true));
 
-
-   m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));
-   m_operatorController.R2().whileTrue(new AlgieOutCommand(m_roller));
+    m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));
+    m_operatorController.R2().whileTrue(new AlgieOutCommand(m_roller));
 
     /**
      * The arm will be passively held up or down after this is used,
@@ -108,16 +116,54 @@ public class RobotContainer {
      */
     m_operatorController.L1().whileTrue(new ArmUpCommand(m_arm));
     m_operatorController.R1().whileTrue(new ArmDownCommand(m_arm));
-    
-  //comment in  m_operatorController.pov(0).whileTrue(new ClimberUpCommand(m_climber));
-  //comment in  m_operatorController.pov(180).whileTrue(new ClimberDownCommand(m_climber));
-    
 
+    m_operatorController.pov(0).whileTrue(new ClimberUpCommand(m_climber));
+    m_operatorController.pov(180).whileTrue(new ClimberDownCommand(m_climber));
 
-     //* Here we declare all of our operator commands, these commands could have been
-    // * written in a more compact manner but are left verbose so the intent is clear.
+    // * Here we declare all of our operator commands, these commands could have
+    // been
+    // * written in a more compact manner but are left verbose so the intent is
+    // clear.
     // */
 
+    // sysidstuff comment out when done.
+    m_operatorController
+        .triangle()
+        .and(m_operatorController.R1())
+        .whileTrue(m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    m_operatorController
+        .circle()
+        .and(m_operatorController.R1())
+        .whileTrue(m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    m_operatorController
+        .cross()
+        .and(m_operatorController.R1())
+        .whileTrue(m_drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    m_operatorController
+        .square()
+        .and(m_operatorController.R1())
+        .whileTrue(m_drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+    // Control the shooter wheel with the left trigger
+    // m_arm.setDefaultCommand(m_arm.runShooter(m_operatorController::getLeftTriggerAxis));
+
+    ///////// ARM SYSID////////////
+    m_operatorController
+        .triangle()
+        .and(m_operatorController.L1())
+        .whileTrue(m_arm.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    m_operatorController
+        .circle()
+        .and(m_operatorController.L1())
+        .whileTrue(m_arm.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    m_operatorController
+        .cross()
+        .and(m_operatorController.L1())
+        .whileTrue(m_arm.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    m_operatorController
+        .square()
+        .and(m_operatorController.L1())
+        .whileTrue(m_arm.sysIdDynamic(SysIdRoutine.Direction.kReverse));
   }
 
   /**
