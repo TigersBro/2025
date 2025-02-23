@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.ShuffleBoard9638Constants;
 
 /** Add your docs here. */
@@ -37,17 +38,23 @@ public class ShuffleBoard9638 {
     // Add a String to Shuffleboard
     public static void addString(String name,
             String addString) {
-        Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB).addString(name,
-                () -> addString.toString());
+        ShuffleboardTab tab = Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB);
+        tab.add(name, addString);
+
+        // Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB).getTitle("button").addString(name,
+        // () -> addString.toString());
     }
 
-    public static void addString(String tab,
+    public static void addString(String tabname,
             String name,
             String addString) {
-        if (tab.isEmpty()) {
-            tab = Constants.ShuffleBoard9638Constants.DEFAULT_TAB;
+        if (tabname.isEmpty()) {
+            tabname = Constants.ShuffleBoard9638Constants.DEFAULT_TAB;
         }
-        Shuffleboard.getTab(tab).addString(name, () -> addString.toString());
+        ShuffleboardTab tab = Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB);
+        tab.add(name, addString);
+    
+        //Shuffleboard.getTab(tab).addString(name, addString.toString());
     }
 
     public static void startUpdate() {

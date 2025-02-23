@@ -73,7 +73,7 @@ public class AlgieAuto extends Command {
     else if(timer.get() > drive_seconds && timer.get() < exjest_seconds)
     {
         m_drive.driveArcade(0.0, 0.0,false);
-        m_roller.runRoller(RollerConstants.ROLLER_CORAL_OUT);
+        m_roller.runRoller(RollerConstants.ROLLER_ALGAE_OUT);
     }
   }
 
