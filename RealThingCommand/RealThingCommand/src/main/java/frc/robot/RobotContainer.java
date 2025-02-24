@@ -66,7 +66,8 @@ public class RobotContainer {
     configureBindings();
     SmartDashboard.putData("Drive",m_drive);
     SmartDashboard.putData("Arm", m_arm);
-    SmartDashboard.putData("Climber", m_climber);
+    SmartDashboard.putData("Climber", m_climber); 
+    
     SmartDashboard.putData("Roller", m_roller);
         // Log Shuffleboard events for command initialize, execute, finish, interrupt
     CommandScheduler.getInstance()

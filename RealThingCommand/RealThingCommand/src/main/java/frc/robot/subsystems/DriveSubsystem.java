@@ -22,9 +22,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.DriveConstants;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Volts;
+
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -58,6 +60,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     SendableRegistry.addChild(drive, leftLeader);
     SendableRegistry.addChild(drive, rightLeader);
+    
     // Set CAN timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
     // which sets or gets parameters during operation may need a shorter timeout.
