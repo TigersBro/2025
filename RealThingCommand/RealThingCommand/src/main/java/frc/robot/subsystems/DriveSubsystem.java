@@ -14,6 +14,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.units.measure.MutDistance;
 import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,6 +47,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public DriveSubsystem() {
     // create brushed motors for drive
+    
     leftLeader = new SparkMax(DriveConstants.LEFT_LEADER_ID, MotorType.kBrushed);
     leftFollower = new SparkMax(DriveConstants.LEFT_FOLLOWER_ID, MotorType.kBrushed);
     rightLeader = new SparkMax(DriveConstants.RIGHT_LEADER_ID, MotorType.kBrushed);
@@ -54,6 +56,8 @@ public class DriveSubsystem extends SubsystemBase {
     // set up differential drive class
     drive = new DifferentialDrive(leftLeader, rightLeader);
 
+    SendableRegistry.addChild(drive, leftLeader);
+    SendableRegistry.addChild(drive, rightLeader);
     // Set CAN timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
     // which sets or gets parameters during operation may need a shorter timeout.
@@ -90,6 +94,8 @@ public class DriveSubsystem extends SubsystemBase {
     leftEncoder = leftLeader.getEncoder();
     rightEncoder = rightLeader.getEncoder();
 
+    SendableRegistry.addChild(drive, leftEncoder);
+    SendableRegistry.addChild(drive, rightEncoder);
 
 
     // Yikes...this is scary...

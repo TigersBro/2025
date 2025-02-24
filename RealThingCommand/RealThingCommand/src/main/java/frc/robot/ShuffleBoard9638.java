@@ -4,12 +4,14 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ShuffleBoard9638Constants;
 
 /** Add your docs here. */
@@ -18,6 +20,8 @@ public class ShuffleBoard9638 {
     private static Timer syncTimer;
     private static ScheduledExecutorService executor;
     private static Runnable runnable;
+    
+    
 
     // Add A Double to Shuffleboard
     public static void addDouble(String tab,
@@ -41,7 +45,7 @@ public class ShuffleBoard9638 {
                                 String addString) 
     {
         ShuffleboardTab tab = Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB);
-        tab.add(name,addString).getEntry();
+        tab.addPersistent(name,addString);
 
         // Shuffleboard.getTab(ShuffleBoard9638Constants.DEFAULT_TAB).getTitle("button").addString(name,
         // () -> addString.toString());

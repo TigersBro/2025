@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
-import frc.robot.ShuffleBoard9638;
 import frc.robot.Constants.ArmConstants;
 
 import static edu.wpi.first.units.Units.Meters;
@@ -34,7 +33,7 @@ public class ArmSubsystem extends SubsystemBase {
   DigitalInput limitSwitchMag = new DigitalInput(Constants.ArmConstants.ARM_LOWER_LIMIT_MAG_ID);
   private final SparkMax armMotor;
   private final RelativeEncoder armEncoder;
-  public static String lastArmDirection;
+  public static String lastArmDirection = "NOTSET";
 
 
 
@@ -53,6 +52,7 @@ public class ArmSubsystem extends SubsystemBase {
    * This subsytem that controls the arm.
    */
   public ArmSubsystem() {
+
 
     // Set up the arm motor as a brushed motor
     armMotor = new SparkMax(ArmConstants.ARM_MOTOR_ID, MotorType.kBrushless);
@@ -115,13 +115,11 @@ public class ArmSubsystem extends SubsystemBase {
    */
   public void runArm(double speed) {
 
-    ShuffleBoard9638.addDouble("Encoders", "Arm Encoder", armEncoder.getPosition());
     armMotor.set(speed);
 
   }
 
   public void setArmDirection(String direction) {
-    ShuffleBoard9638.addString("Arm Direction", direction);
     lastArmDirection = direction;
   }
 

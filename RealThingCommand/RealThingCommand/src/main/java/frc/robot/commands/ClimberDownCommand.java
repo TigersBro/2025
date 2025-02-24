@@ -5,14 +5,13 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.ShuffleBoard9638;
 import frc.robot.subsystems.ClimberSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class ClimberDownCommand extends Command {
   private final ClimberSubsystem m_climber;
-
+  
   /**
    * Runs the climber down, note that this can change 
    * based on how the winch is wound.
@@ -31,7 +30,6 @@ public class ClimberDownCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  ShuffleBoard9638.addString("button","climber down");
   m_climber.runClimber(ClimberConstants.CLIMBER_SPEED_DOWN);
   }
 

@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.RollerConstants;
-import frc.robot.ShuffleBoard9638;
 import frc.robot.subsystems.RollerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -32,7 +31,7 @@ public class AlgieInCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ShuffleBoard9638.addString("button", "algie in");
+   // ShuffleBoard9638.addString("button", "algie in");
 
     m_roller.runRoller(RollerConstants.ROLLER_ALGAE_IN);
   }
