@@ -8,11 +8,13 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.units.measure.MutDistance;
 import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -46,15 +48,15 @@ public class ArmSubsystem extends SubsystemBase {
   // Mutable holder for unit-safe linear velocity values, persisted to avoid reallocation.
   private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
 
-
+  //private final NetworkTableEntry arm_position = Shuffleboard.getTab("Test").add("Arm Position",0).getEntry();
+    
 
   /**
    * This subsytem that controls the arm.
    */
   public ArmSubsystem() {
 
-
-    // Set up the arm motor as a brushed motor
+   // Set up the arm motor as a brushed motor
     armMotor = new SparkMax(ArmConstants.ARM_MOTOR_ID, MotorType.kBrushless);
 
     // Set can timeout. Because this project only sets parameters once on

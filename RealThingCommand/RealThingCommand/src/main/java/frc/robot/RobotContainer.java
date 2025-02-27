@@ -19,6 +19,8 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -64,11 +66,15 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    DriverStation.silenceJoystickConnectionWarning(true);
     SmartDashboard.putData("Drive",m_drive);
     SmartDashboard.putData("Arm", m_arm);
     SmartDashboard.putData("Climber", m_climber); 
     
     SmartDashboard.putData("Roller", m_roller);
+    Shuffleboard.getTab("test").add("Drive", m_drive);
+
+
         // Log Shuffleboard events for command initialize, execute, finish, interrupt
     CommandScheduler.getInstance()
         .onCommandInitialize(
@@ -115,40 +121,40 @@ public class RobotContainer {
      * stick away from you (a negative value) drives the robot forwards (a positive
      * value). Similarly for the X axis where we need to flip the value so the
      * joystick matches the WPILib convention of counter-clockwise positive
-     */
-    m_drive.setDefaultCommand(new DriveCommand(m_drive,
-        () -> -m_driverController.getY(),
-        () -> -m_driverController.getZ(),
-        () -> true));
+    //  */
+    // m_drive.setDefaultCommand(new DriveCommand(m_drive,
+    //     () -> -m_driverController.getY(),
+    //     () -> -m_driverController.getZ(),
+    //     () -> true));
 
-    /**
-     * Holding the left bumper (or whatever button you assign) will multiply the
-     * speed
-     * by a decimal to limit the max speed of the robot ->
-     * 1 (100%) from the controller * .9 = 90% of the max speed when held (we also
-     * square it)
-     * 
-     * Slow mode is very valuable for line ups and the deep climb
-     * 
-     * When switching to single driver mode switch to the B button
-     */
-    m_driverController.button(2).whileTrue(new DriveCommand(m_drive,
-        () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,
-        () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
-        () -> true));
+    // /**
+    //  * Holding the left bumper (or whatever button you assign) will multiply the
+    //  * speed
+    //  * by a decimal to limit the max speed of the robot ->
+    //  * 1 (100%) from the controller * .9 = 90% of the max speed when held (we also
+    //  * square it)
+    //  * 
+    //  * Slow mode is very valuable for line ups and the deep climb
+    //  * 
+    //  * When switching to single driver mode switch to the B button
+    //  */
+    // m_driverController.button(2).whileTrue(new DriveCommand(m_drive,
+    //     () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,
+    //     () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
+    //     () -> true));
 
-    m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));
-    m_operatorController.R2().whileTrue(new AlgieOutCommand(m_roller));
+    // m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));
+    // m_operatorController.R2().whileTrue(new AlgieOutCommand(m_roller));
 
-    /**
-     * The arm will be passively held up or down after this is used,
-     * make sure not to run the arm too long or it may get upset!
-     */
-    m_operatorController.L1().whileTrue(new ArmUpCommand(m_arm));
-    m_operatorController.R1().whileTrue(new ArmDownCommand(m_arm));
+    // /**
+    //  * The arm will be passively held up or down after this is used,
+    //  * make sure not to run the arm too long or it may get upset!
+    //  */
+    // m_operatorController.L1().whileTrue(new ArmUpCommand(m_arm));
+    // m_operatorController.R1().whileTrue(new ArmDownCommand(m_arm));
 
-    m_operatorController.pov(0).whileTrue(new ClimberUpCommand(m_climber));
-    m_operatorController.pov(180).whileTrue(new ClimberDownCommand(m_climber));
+    // m_operatorController.pov(0).whileTrue(new ClimberUpCommand(m_climber));
+    // m_operatorController.pov(180).whileTrue(new ClimberDownCommand(m_climber));
 
     // * Here we declare all of our operator commands, these commands could have
     // been
