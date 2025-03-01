@@ -6,11 +6,14 @@ package frc.robot.commands;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An ArmUpCommand that uses an Arm subsystem. */
 public class ArmUpCommand extends Command {
   private final ArmSubsystem m_arm;
+  final GenericEntry m_maxSpeed;
 
   /**
    * Powers the arm up, when finished passively holds the arm up.
@@ -23,7 +26,13 @@ public class ArmUpCommand extends Command {
   public ArmUpCommand(ArmSubsystem arm) {
     m_arm = arm;
     addRequirements(arm);
-  }
+   m_maxSpeed =
+        Shuffleboard.getTab("Configuration")
+            .add("Max Speed Arm Up", 1)
+            .withWidget("Number Slider")
+            .withPosition(1, 1)
+            .withSize(2, 1)
+            .getEntry();}
 
   // Called when the command is initially scheduled.
   @Override
@@ -36,7 +45,8 @@ public class ArmUpCommand extends Command {
  if (m_arm.can_we_go_up() )
     {
       m_arm.setArmDirection( ArmConstants.ARM_UP_DIRECTION_STRING);
-      m_arm.runArm(ArmConstants.ARM_SPEED_UP);
+      m_arm.runArm(m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP));
+    
     }
   }
 

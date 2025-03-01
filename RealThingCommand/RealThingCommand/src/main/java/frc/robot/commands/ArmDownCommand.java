@@ -5,12 +5,14 @@
 package frc.robot.commands;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An ArmDown command that uses an Arm subsystem. */
 public class ArmDownCommand extends Command {
   private final ArmSubsystem m_arm;
-
+  final GenericEntry m_maxSpeed;
   /**
    * Powers the arm down, when finished passively holds the arm down.
    * 
@@ -23,6 +25,13 @@ public class ArmDownCommand extends Command {
     m_arm = arm;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(arm);
+    m_maxSpeed =
+        Shuffleboard.getTab("Configuration")
+            .add("Max Speed Arm Down", 1)
+            .withWidget("Number Slider")
+            .withPosition(1, 1)
+            .withSize(2, 1)
+            .getEntry();
   }
 
   // Called when the command is initially scheduled.
@@ -34,8 +43,8 @@ public class ArmDownCommand extends Command {
   public void execute() {
     if (m_arm.can_we_go_down() )
     {
-      m_arm.setArmDirection( ArmConstants.ARM_DOWN_DIRECTION_STRING);
-      m_arm.runArm(ArmConstants.ARM_SPEED_DOWN);
+        m_arm.setArmDirection( ArmConstants.ARM_DOWN_DIRECTION_STRING);
+      m_arm.runArm(m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN));
     }
   }
 

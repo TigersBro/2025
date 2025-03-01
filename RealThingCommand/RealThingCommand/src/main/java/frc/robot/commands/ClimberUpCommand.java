@@ -6,12 +6,14 @@ package frc.robot.commands;
 
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.subsystems.ClimberSubsystem;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An ClimberUpCommand that uses a climb subsystem. */
 public class ClimberUpCommand extends Command {
   private final ClimberSubsystem m_climber;
-
+ final GenericEntry m_maxSpeed ;
   /**
    * Runs the climber up, note that this can change 
    * based on how the winch is wound.
@@ -21,7 +23,14 @@ public class ClimberUpCommand extends Command {
   public ClimberUpCommand(ClimberSubsystem climber) {
     m_climber = climber;
     addRequirements(climber);
-  }
+    m_maxSpeed =
+        Shuffleboard.getTab("Configuration")
+            .add("Max Speed Climb Up", 1)
+            .withWidget("Number Slider")
+            .withPosition(1, 1)
+            .withSize(2, 1)
+            .getEntry();
+          }
 
   // Called when the command is initially scheduled.
   @Override
@@ -30,7 +39,7 @@ public class ClimberUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   m_climber.runClimber(ClimberConstants.CLIMBER_SPEED_UP);
+   m_climber.runClimber(m_maxSpeed.getDouble(ClimberConstants.CLIMBER_SPEED_UP));
   }
 
   // Called once the command ends or is interrupted.. Here we ensure the climber is not

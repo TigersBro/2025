@@ -53,14 +53,18 @@ public final class Constants {
     public static final int ARM_MOTOR_STOP = 0;
     public static final String ARM_DOWN_DIRECTION_STRING = "DOWN";
     public static final String ARM_UP_DIRECTION_STRING = "UP";
+    public static final int ARM_GEAR_RATIO = 4;
   }
 
   public static final class ClimberConstants {
-    public static final int CLIMBER_MOTOR_ID = 7;
+    public static final int CLIMBER_rightwinch_MOTOR_ID = 7;
+    public static final int CLIMBER_leftwinch_MOTOR_ID = 9;
     public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 60;
     public static final double CLIMBER_MOTOR_VOLTAGE_COMP = 12;
     public static final double CLIMBER_SPEED_DOWN = -0.5;
     public static final double CLIMBER_SPEED_UP = 0.5;
+    public static final double CLIMBER_GEAR_RATIO = 71;
+    public static final double CLIMBER_CPR = 7/4;
   }
 
   public static final class OperatorConstants {

@@ -8,10 +8,12 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.units.measure.MutDistance;
 import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -22,24 +24,27 @@ import static edu.wpi.first.units.Units.Volts;
 
 public class ClimberSubsystem extends SubsystemBase {
 
-    private final SparkMax climbMotor;
+  private final SparkMax climbMotorright;
+  private final SparkMax climbMotorleft;
     private final RelativeEncoder climbEncoder;
     private final SysIdRoutine sysIdRoutine;
     private final MutVoltage m_appliedVoltage = Volts.mutable(0);
     private final MutDistance m_distance = Meters.mutable(0);
     private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
-
+    private final GenericEntry m_maxSpeed;
     /**
      * This subsytem that controls the climber.
      */
     public ClimberSubsystem () {
 
     // Set up the climb motor as a brushless motor
-    climbMotor = new SparkMax(ClimberConstants.CLIMBER_MOTOR_ID, MotorType.kBrushless);
+    climbMotorleft = new SparkMax(ClimberConstants.CLIMBER_leftwinch_MOTOR_ID, MotorType.kBrushed);
+    climbMotorright = new SparkMax(ClimberConstants.CLIMBER_rightwinch_MOTOR_ID, MotorType.kBrushed);
     // Set can timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
     // which sets or gets parameters during operation may need a shorter timeout.
-    climbMotor.setCANTimeout(250);
+    climbMotorleft.setCANTimeout(250);
+    climbMotorright.setCANTimeout(250);
 
     // Create and apply configuration for climb motor. Voltage compensation helps
     // the climb behave the same as the battery
@@ -49,12 +54,22 @@ public class ClimberSubsystem extends SubsystemBase {
     climbConfig.voltageCompensation(ClimberConstants.CLIMBER_MOTOR_VOLTAGE_COMP);
     climbConfig.smartCurrentLimit(ClimberConstants.CLIMBER_MOTOR_CURRENT_LIMIT);
     climbConfig.idleMode(IdleMode.kBrake);
-    climbMotor.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    climbEncoder = climbMotor.getEncoder();
-    
+    climbMotorleft.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    climbConfig.follow(climbMotorleft);
+    climbMotorright.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    climbEncoder = climbMotorleft.getEncoder();
 
+    
+  m_maxSpeed =
+        Shuffleboard.getTab("Configuration")
+            .add("Max Speed", 1)
+            .withWidget("Number Slider")
+            .withPosition(1, 1)
+            .withSize(2, 1)
+            .getEntry();
 
     // Yikes...this is scary...
+    //yup
     sysIdRoutine =
     new SysIdRoutine(
         // Empty config defaults to 1 volt/second ramp rate and 7 volt step voltage.
@@ -62,7 +77,7 @@ public class ClimberSubsystem extends SubsystemBase {
         new SysIdRoutine.Mechanism(
             // Tell SysId how to plumb the driving voltage to the motors.
             voltage -> {
-              climbMotor.setVoltage(voltage);
+              climbMotorleft.setVoltage(voltage);
             },
             // Tell SysId how to record a frame of data for each motor on the mechanism being
             // characterized.
@@ -72,7 +87,7 @@ public class ClimberSubsystem extends SubsystemBase {
               log.motor("drive-left")
                   .voltage(
                       m_appliedVoltage.mut_replace(
-                          climbMotor.get() * RobotController.getBatteryVoltage(), Volts))
+                          climbMotorleft.get() * RobotController.getBatteryVoltage(), Volts))
                    .linearPosition(m_distance.mut_replace(climbEncoder.getPosition(), Meters))
                    .linearVelocity(m_velocity.mut_replace(climbEncoder.getVelocity(), MetersPerSecond));
               // Record a frame for the right motors.  Since these share an encoder, we consider
@@ -97,7 +112,7 @@ public class ClimberSubsystem extends SubsystemBase {
      * @param speed motor speed from -1.0 to 1, with 0 stopping it
      */
     public void runClimber(double speed){
-        climbMotor.set(speed);
+        climbMotorleft.set(speed);
     }
 
   /**
