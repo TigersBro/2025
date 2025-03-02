@@ -6,12 +6,20 @@ package frc.robot.commands;
 
 import frc.robot.Constants.RollerConstants;
 import frc.robot.subsystems.RollerSubsystem;
+
+import java.util.Map;
+
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** A command to take Algae into the robot. */
 public class AlgieInCommand extends Command {
   private final RollerSubsystem m_roller;
-
+    private static  GenericEntry m_maxSpeed ;
+  private WidgetType blah;
   /**
    * Rolls Algae into the intake.
    *
@@ -19,8 +27,20 @@ public class AlgieInCommand extends Command {
    */
   public AlgieInCommand(RollerSubsystem roller) {
     m_roller = roller;
+    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(roller);
+    if( m_maxSpeed == null)
+    {
+      m_maxSpeed =
+        Shuffleboard.getTab("Configuration")
+            .add("Algie In",RollerConstants.ROLLER_ALGAE_IN)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("Min", -1, "Max", 0))
+        
+            .withSize(2, 1)
+            .getEntry();
+    }
   }
 
   // Called when the command is initially scheduled.
@@ -33,7 +53,7 @@ public class AlgieInCommand extends Command {
   public void execute() {
    // ShuffleBoard9638.addString("button", "algie in");
 
-    m_roller.runRoller(RollerConstants.ROLLER_ALGAE_IN);
+    m_roller.runRoller(m_maxSpeed.getDouble(RollerConstants.ROLLER_ALGAE_IN));
   }
 
   // Called once the command ends or is interrupted. This ensures the roller is

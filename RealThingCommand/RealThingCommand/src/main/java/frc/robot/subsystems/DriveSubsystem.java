@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.DriveConstants;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Volts;
@@ -37,6 +36,8 @@ public class DriveSubsystem extends SubsystemBase {
   private final RelativeEncoder leftEncoder;
   private final RelativeEncoder rightEncoder;
   private final DifferentialDrive drive;
+  private boolean reverseRotation;
+  private boolean reverseFront;
 
   private final SysIdRoutine sysIdRoutine;
   private final MutVoltage m_appliedVoltage = Volts.mutable(0);
@@ -50,6 +51,9 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     // create brushed motors for drive
     
+    reverseRotation = false;
+    reverseFront = false;
+
     leftLeader = new SparkMax(DriveConstants.LEFT_LEADER_ID, MotorType.kBrushed);
     leftFollower = new SparkMax(DriveConstants.LEFT_FOLLOWER_ID, MotorType.kBrushed);
     rightLeader = new SparkMax(DriveConstants.RIGHT_LEADER_ID, MotorType.kBrushed);
@@ -157,7 +161,13 @@ public class DriveSubsystem extends SubsystemBase {
    * @param squared do you square the inputs from the controller
    */
   public void driveArcade(double xSpeed, double zRotation, boolean squared) {
-    drive.arcadeDrive(xSpeed, zRotation, squared);
+    if (reverseFront == true)
+      xSpeed = xSpeed * -1;
+    if (reverseRotation = true)
+      zRotation = zRotation * -1;
+
+      //These seem to be flipped in the old code...we will see how it goes here: 
+    drive.arcadeDrive( xSpeed, zRotation, squared);
   }
 
   /**
@@ -188,5 +198,21 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.dynamic(direction);
+  }
+
+  public void reverseRotation()
+  {
+    if( reverseRotation == true)
+      reverseRotation = false;
+    else
+      reverseRotation = true; 
+  } 
+  public void reverseFront()
+  {
+    reverseRotation();
+    if( reverseFront == true)
+      reverseFront = false;
+    else
+      reverseFront = true; 
   }
 }

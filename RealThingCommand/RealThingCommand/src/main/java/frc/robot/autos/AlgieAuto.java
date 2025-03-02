@@ -2,8 +2,8 @@ package frc.robot.autos;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.RollerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
@@ -14,7 +14,9 @@ public class AlgieAuto extends Command {
     private ArmSubsystem m_arm;
     private Timer timer;
     private double drive_seconds = 3.25;
-    private double exjest_seconds = 4.5;
+    private double turn_seconds = 4.5;
+    private double score_seconds = 5.5;
+    private double kobe = 6;
 
     /**
      * This auto will have the robot drive forwards, stop, then drop the coral into L1
@@ -61,19 +63,32 @@ public class AlgieAuto extends Command {
 
     /**
      * While this timer is less than drive_seconds, the robot will obey the command inside
+     * This could benefit from using the distance versus using a timer.
      */
     if(timer.get() < drive_seconds)
     {
-        m_drive.driveArcade(0.3, 0.0,false);
+        m_drive.driveArcade(Constants.DriveConstants.SUPER_SLOW_MODE_MOVE, 0.0,false);
     }
     /**
-     * Once the timer is greater than drive_seconds but less than exjest seconds,
-     * the code inside will run, here we stop the drivetrain and exjest the coral.
+     * Once the timer is greater than drive_seconds but less than turn seconds,
+     * we will turn the bot to point towards the score this could use the qr tag if we can figure that out.
      */
-    else if(timer.get() > drive_seconds && timer.get() < exjest_seconds)
+    else if(timer.get() > drive_seconds && timer.get() < turn_seconds)
     {
-        m_drive.driveArcade(0.0, 0.0,false);
-        m_roller.runRoller(RollerConstants.ROLLER_ALGAE_OUT);
+        m_drive.driveArcade(0.0, Constants.DriveConstants.SLOW_MODE_TURN,false);
+    }
+    //drive forward for a few moments to get the ball in scoring position
+    else if (timer.get() > turn_seconds && timer.get() < score_seconds)
+    {
+
+      m_drive.driveArcade(Constants.DriveConstants.SUPER_SLOW_MODE_MOVE, 0, false);
+    
+    }
+    else if (timer.get() > score_seconds && timer.get() < kobe)
+    {
+
+      m_drive.driveArcade(0, 0, false);
+      m_roller.runRoller(Constants.RollerConstants.ROLLER_CORAL_OUT);
     }
   }
 
@@ -92,6 +107,6 @@ public class AlgieAuto extends Command {
   public boolean isFinished() {
     // check if timer exceeds seconds, when it has this will return true indicating
     // this command is finished
-    return timer.get() >= exjest_seconds;
+    return timer.get() >= kobe;
   }
 }

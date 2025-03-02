@@ -4,17 +4,19 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ShuffleBoard9638Constants;
 
 /** Add your docs here. */
+
+// To make this work....we would need to include a linkedlist/Array/Table of some form
+//  which captures when we created a name and what object is points to so what we don't get duplicate title/names when we create
+//  a "get" to the name and storage into a type which would then be accessed when setting or getting would then be handled.
 public class ShuffleBoard9638 {
 
     private static Timer syncTimer;

@@ -6,6 +6,9 @@ package frc.robot.commands;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
+
+import java.util.Map;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,7 +16,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 /** An ArmUpCommand that uses an Arm subsystem. */
 public class ArmUpCommand extends Command {
   private final ArmSubsystem m_arm;
-  final GenericEntry m_maxSpeed;
+  private static GenericEntry m_maxSpeed;
+  private static GenericEntry m_holdArm;
 
   /**
    * Powers the arm up, when finished passively holds the arm up.
@@ -23,16 +27,39 @@ public class ArmUpCommand extends Command {
    *
    * @param arm The subsystem used by this command.
    */
-  public ArmUpCommand(ArmSubsystem arm) {
+  public ArmUpCommand(ArmSubsystem arm) 
+  {
     m_arm = arm;
     addRequirements(arm);
-   m_maxSpeed =
-        Shuffleboard.getTab("Configuration")
-            .add("Max Speed Arm Up", 1)
-            .withWidget("Number Slider")
-            .withPosition(1, 1)
-            .withSize(2, 1)
-            .getEntry();}
+    if (m_maxSpeed == null)
+    {    
+      m_maxSpeed
+        =
+            Shuffleboard.getTab("Configuration")
+                .add("Max Speed Arm Up", ArmConstants.ARM_SPEED_UP)
+                .withWidget("Number Slider")
+                // .withPosition(1, 1)
+                .withProperties(Map.of("min", -1, "max", 0))
+        
+                .withSize(2, 1)
+                .getEntry();
+    } 
+    if (m_holdArm == null)
+    {
+      m_holdArm
+      =
+          Shuffleboard.getTab("Configuration")
+              .add("Hold Arm Up", ArmConstants.ARM_HOLD_UP)
+              .withWidget("Number Slider")
+              // .withPosition(1, 1)
+              .withProperties(Map.of("min", 0, "max", 1))
+        
+              .withSize(2, 1)
+              .getEntry();
+    }
+
+
+  }
 
   // Called when the command is initially scheduled.
   @Override

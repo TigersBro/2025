@@ -8,12 +8,10 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.units.measure.MutDistance;
 import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -31,7 +29,7 @@ public class ClimberSubsystem extends SubsystemBase {
     private final MutVoltage m_appliedVoltage = Volts.mutable(0);
     private final MutDistance m_distance = Meters.mutable(0);
     private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
-    private final GenericEntry m_maxSpeed;
+
     /**
      * This subsytem that controls the climber.
      */
@@ -60,13 +58,6 @@ public class ClimberSubsystem extends SubsystemBase {
     climbEncoder = climbMotorleft.getEncoder();
 
     
-  m_maxSpeed =
-        Shuffleboard.getTab("Configuration")
-            .add("Max Speed", 1)
-            .withWidget("Number Slider")
-            .withPosition(1, 1)
-            .withSize(2, 1)
-            .getEntry();
 
     // Yikes...this is scary...
     //yup

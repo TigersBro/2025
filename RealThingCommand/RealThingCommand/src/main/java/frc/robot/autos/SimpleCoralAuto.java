@@ -2,6 +2,7 @@ package frc.robot.autos;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.RollerConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -64,7 +65,7 @@ public class SimpleCoralAuto extends Command {
      */
     if(timer.get() < drive_seconds)
     {
-        m_drive.driveArcade(0.3, 0.0,false);
+        m_drive.driveArcade(Constants.DriveConstants.SUPER_SLOW_MODE_MOVE, 0.0,false);
     }
     /**
      * Once the timer is greater than drive_seconds but less than exjest seconds,

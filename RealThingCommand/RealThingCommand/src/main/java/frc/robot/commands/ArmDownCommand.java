@@ -3,8 +3,12 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
+
+import java.util.Map;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 /** An ArmDown command that uses an Arm subsystem. */
 public class ArmDownCommand extends Command {
   private final ArmSubsystem m_arm;
-  final GenericEntry m_maxSpeed;
+  private static  GenericEntry m_maxSpeed ;
   /**
    * Powers the arm down, when finished passively holds the arm down.
    * 
@@ -25,13 +29,19 @@ public class ArmDownCommand extends Command {
     m_arm = arm;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(arm);
-    m_maxSpeed =
+    if( m_maxSpeed == null)
+    {
+      m_maxSpeed =
         Shuffleboard.getTab("Configuration")
-            .add("Max Speed Arm Down", 1)
+            .add("Max Speed Arm Down", Constants.ArmConstants.ARM_SPEED_DOWN)
             .withWidget("Number Slider")
-            .withPosition(1, 1)
+            // .withPosition(1, 1).withProperties(Map.of("min", 0, "max", 1))
+            .withProperties(Map.of("min", 0, "max", 1))
+        
             .withSize(2, 1)
             .getEntry();
+    }
+
   }
 
   // Called when the command is initially scheduled.

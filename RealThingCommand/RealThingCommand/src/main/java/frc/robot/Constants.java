@@ -26,7 +26,11 @@ public final class Constants {
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
     public static final double DRIVE_MOTOR_VOLTAGE_COMP = 12;
     public static final double SLOW_MODE_MOVE = 0.5;
+    public static final double SUPER_SLOW_MODE_MOVE = 0.3;
     public static final double SLOW_MODE_TURN = 0.6;
+
+    public static final int DRIVE_REVERSE_FRONT_BUTTON_ID = 10;
+    public static final int DRIVE_REVERSE_ROTATION_BUTTON_ID = 11;
   }
 
   public static final class RollerConstants {
@@ -34,8 +38,8 @@ public final class Constants {
     public static final int ROLLER_MOTOR_CURRENT_LIMIT = 60;
     public static final double ROLLER_MOTOR_VOLTAGE_COMP = 10;
     public static final double ROLLER_CORAL_OUT = -.4;
-    public static final double ROLLER_ALGAE_IN = -0.2;
-    public static final double ROLLER_ALGAE_OUT = 0.2;
+    public static final double ROLLER_ALGAE_IN = -0.7;
+    public static final double ROLLER_ALGAE_OUT = 0.4;
     public static final double ROLLER_CORAL_STACK = -1;
   }
 
@@ -43,13 +47,14 @@ public final class Constants {
     public static final int ARM_MOTOR_ID = 6;
     public static final int ARM_MOTOR_CURRENT_LIMIT = 60;
     public static final double ARM_MOTOR_VOLTAGE_COMP = 10;
-    public static final double ARM_SPEED_DOWN = 0.08;
-    public static final double ARM_SPEED_UP = -0.08;
-    public static final double ARM_HOLD_DOWN = 0.01;
-    public static final double ARM_HOLD_UP = -0.01;
+    public static final double ARM_SPEED_DOWN = 0.4;
+    public static final double ARM_SPEED_UP = -0.4;
+    public static final double ARM_HOLD_DOWN = -0.01;
+    public static final double ARM_HOLD_UP = 0.1;
     public static final int ARM_UPPER_LIMIT_ID = 0;
     public static final int ARM_LOWER_LIMIT_ID = 1;
     public static final int ARM_LOWER_LIMIT_MAG_ID = 8;
+    public static final int ARM_UPPER_LIMIT_MAG_ID = 7;
     public static final int ARM_MOTOR_STOP = 0;
     public static final String ARM_DOWN_DIRECTION_STRING = "DOWN";
     public static final String ARM_UP_DIRECTION_STRING = "UP";
@@ -65,6 +70,8 @@ public final class Constants {
     public static final double CLIMBER_SPEED_UP = 0.5;
     public static final double CLIMBER_GEAR_RATIO = 71;
     public static final double CLIMBER_CPR = 7/4;
+    public static final int CLIMBER_ENCODER_1 = 1;
+    public static final int CLIMBER_ENCODER_2 = 2;
   }
 
   public static final class OperatorConstants {

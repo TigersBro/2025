@@ -4,8 +4,12 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.subsystems.ClimberSubsystem;
+
+import java.util.Map;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 /** An example command that uses an example subsystem. */
 public class ClimberDownCommand extends Command {
   private final ClimberSubsystem m_climber;
-  final GenericEntry m_maxSpeed ;
+  private static GenericEntry m_maxSpeed ;
   /**
    * Runs the climber down, note that this can change 
    * based on how the winch is wound.
@@ -23,13 +27,17 @@ public class ClimberDownCommand extends Command {
   public ClimberDownCommand(ClimberSubsystem climber) {
     m_climber = climber;
     addRequirements(climber);
-      m_maxSpeed =
+    if (m_maxSpeed == null)  
+    {
+        m_maxSpeed =
         Shuffleboard.getTab("Configuration")
-            .add("Max Speed Climb Down", 1)
+            .add("Max Speed Climb Down", Constants.ClimberConstants.CLIMBER_SPEED_DOWN)
             .withWidget("Number Slider")
-            .withPosition(1, 1)
+            // .withPosition(1, 1)
+            .withProperties(Map.of("min", -1, "max", 0))
             .withSize(2, 1)
             .getEntry();
+    }
   }
 
   // Called when the command is initially scheduled.

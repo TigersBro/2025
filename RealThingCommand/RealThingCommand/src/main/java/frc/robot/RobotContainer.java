@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.autos.AlgieAuto;
 import frc.robot.autos.DriveForwardAuto;
 import frc.robot.autos.SimpleCoralAuto;
 import frc.robot.commands.AlgieInCommand;
@@ -19,19 +20,16 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 
 /**
@@ -62,42 +60,55 @@ public class RobotContainer {
 
   public final SimpleCoralAuto m_simpleCoralAuto = new SimpleCoralAuto(m_drive, m_roller, m_arm);
   public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive);
+  public final AlgieAuto m_algieAuto = new AlgieAuto(m_drive, m_roller, m_arm);
 
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
+
     SmartDashboard.putData("Drive",m_drive);
     SmartDashboard.putData("Arm", m_arm);
     SmartDashboard.putData("Climber", m_climber); 
-    
-    
     SmartDashboard.putData("Roller", m_roller);
-    Shuffleboard.getTab("test").add("Drive", m_drive);
+
+    Shuffleboard.getTab("Commands").add("Algie In",new AlgieInCommand(m_roller));
+    Shuffleboard.getTab("Commands").add("Algie Out",new AlgieOutCommand(m_roller));
+    Shuffleboard.getTab("Commands").add("Arm Up",new ArmUpCommand(m_arm));
+    Shuffleboard.getTab("Commands").add("Arm Down",new ArmDownCommand(m_arm));
+    Shuffleboard.getTab("Commands").add("Climber Down",new ClimberDownCommand(m_climber));
+    Shuffleboard.getTab("Commands").add("Climber Up",new ClimberUpCommand(m_climber));
+    Shuffleboard.getTab("Commands").add("Reverse Rotation",new InstantCommand( () -> m_drive.reverseRotation()));
+    Shuffleboard.getTab("Commands").add("Reverse Front",new InstantCommand( () -> m_drive.reverseFront()));
+
+    m_chooser.setDefaultOption("Drive Forward Auto",  m_driveForwardAuto);
+    m_chooser.addOption("Algie Auto", m_algieAuto);
+    m_chooser.addOption("Coral Auto",m_simpleCoralAuto);
+    SmartDashboard.putData(m_chooser);
 
 
         // Log Shuffleboard events for command initialize, execute, finish, interrupt
-    CommandScheduler.getInstance()
-        .onCommandInitialize(
-            command ->
-                Shuffleboard.addEventMarker(
-                    "Command initialized", command.getName(), EventImportance.kNormal));
-    CommandScheduler.getInstance()
-        .onCommandExecute(
-            command ->
-                Shuffleboard.addEventMarker(
-                    "Command executed", command.getName(), EventImportance.kNormal));
-    CommandScheduler.getInstance()
-        .onCommandFinish(
-            command ->
-                Shuffleboard.addEventMarker(
-                    "Command finished", command.getName(), EventImportance.kNormal));
-    CommandScheduler.getInstance()
-        .onCommandInterrupt(
-            command ->
-                Shuffleboard.addEventMarker(
-                    "Command interrupted", command.getName(), EventImportance.kNormal));
-  }
+//     CommandScheduler.getInstance()
+//         .onCommandInitialize(
+//             command ->
+//                 Shuffleboard.addEventMarker(
+//                     "Command initialized", command.getName(), EventImportance.kNormal));
+//     CommandScheduler.getInstance()
+//         .onCommandExecute(
+//             command ->
+//                 Shuffleboard.addEventMarker(
+//                     "Command executed", command.getName(), EventImportance.kNormal));
+//     CommandScheduler.getInstance()
+//         .onCommandFinish(
+//             command ->
+//                 Shuffleboard.addEventMarker(
+//                     "Command finished", command.getName(), EventImportance.kNormal));
+//     CommandScheduler.getInstance()
+//         .onCommandInterrupt(
+//             command ->
+//                 Shuffleboard.addEventMarker(
+//                     "Command interrupted", command.getName(), EventImportance.kNormal));
+   }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
@@ -124,12 +135,12 @@ public class RobotContainer {
      * joystick matches the WPILib convention of counter-clockwise positive
      */
     m_drive.setDefaultCommand(new DriveCommand(m_drive,
-        () -> -m_driverController.getY(),
         () -> -m_driverController.getZ(),
+        () -> -m_driverController.getY(),
         () -> true));
 
     /**
-     * Holding the left bumper (or whatever button you assign) will multiply the
+     * Holding the button 2 (thumb button) (or whatever button you assign) will multiply the
      * speed
      * by a decimal to limit the max speed of the robot ->
      * 1 (100%) from the controller * .9 = 90% of the max speed when held (we also
@@ -140,8 +151,8 @@ public class RobotContainer {
      * When switching to single driver mode switch to the B button
      */
     m_driverController.button(2).whileTrue(new DriveCommand(m_drive,
-        () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,
         () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
+        () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,
         () -> true));
 
     m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));
@@ -156,6 +167,11 @@ public class RobotContainer {
 
     m_operatorController.pov(0).whileTrue(new ClimberUpCommand(m_climber));
     m_operatorController.pov(180).whileTrue(new ClimberDownCommand(m_climber));
+
+    
+    m_driverController.button(DriveConstants.DRIVE_REVERSE_ROTATION_BUTTON_ID).toggleOnTrue(new InstantCommand( () -> m_drive.reverseRotation() ));
+    m_driverController.button(DriveConstants.DRIVE_REVERSE_FRONT_BUTTON_ID).toggleOnTrue(new InstantCommand( () -> m_drive.reverseFront() ));
+
 
     // * Here we declare all of our operator commands, these commands could have
     // been
@@ -185,22 +201,22 @@ public class RobotContainer {
     // m_arm.setDefaultCommand(m_arm.runShooter(m_operatorController::getLeftTriggerAxis));
 
     ///////// ARM SYSID////////////
-    m_operatorController
-        .triangle()
-        .and(m_operatorController.L1())
-        .whileTrue(m_arm.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    m_operatorController
-        .circle()
-        .and(m_operatorController.L1())
-        .whileTrue(m_arm.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    m_operatorController
-        .cross()
-        .and(m_operatorController.L1())
-        .whileTrue(m_arm.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    m_operatorController
-        .square()
-        .and(m_operatorController.L1())
-        .whileTrue(m_arm.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    // m_operatorController
+    //     .triangle()
+    //     .and(m_operatorController.L1())
+    //     .whileTrue(m_arm.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    // m_operatorController
+    //     .circle()
+    //     .and(m_operatorController.L1())
+    //     .whileTrue(m_arm.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    // m_operatorController
+    //     .cross()
+    //     .and(m_operatorController.L1())
+    //     .whileTrue(m_arm.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    // m_operatorController
+    //     .square()
+    //     .and(m_operatorController.L1())
+    //     .whileTrue(m_arm.sysIdDynamic(SysIdRoutine.Direction.kReverse));
   }
 
   /**

@@ -8,14 +8,11 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.units.measure.MutDistance;
 import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -27,13 +24,16 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
 
+
 public class ArmSubsystem extends SubsystemBase {
 
   // DigitalInput toplimitSwitch = new
   // DigitalInput(Constants.ArmConstants.ARM_UPPER_LIMIT_ID);
   // DigitalInput bottomlimitSwitch = new
   // DigitalInput(Constants.ArmConstants.ARM_LOWER_LIMIT_ID);
-  DigitalInput limitSwitchMag = new DigitalInput(Constants.ArmConstants.ARM_LOWER_LIMIT_MAG_ID);
+  DigitalInput limitSwitchMagUp = new DigitalInput(Constants.ArmConstants.ARM_UPPER_LIMIT_MAG_ID);
+  DigitalInput limitSwitchMagDown = new DigitalInput(Constants.ArmConstants.ARM_LOWER_LIMIT_MAG_ID);
+  boolean limitSwitchBypass;
   private final SparkMax armMotor;
   private final RelativeEncoder armEncoder;
   public static String lastArmDirection = "NOTSET";
@@ -56,7 +56,7 @@ public class ArmSubsystem extends SubsystemBase {
    * This subsytem that controls the arm.
    */
   public ArmSubsystem() {
-
+    limitSwitchBypass = false;
    // Set up the arm motor as a brushed motor
     armMotor = new SparkMax(ArmConstants.ARM_MOTOR_ID, MotorType.kBrushless);
 
@@ -92,7 +92,7 @@ public class ArmSubsystem extends SubsystemBase {
             log -> {
               // Record a frame for the left motors.  Since these share an encoder, we consider
               // the entire group to be one motor.
-              log.motor("drive-left")
+              log.motor("arm")
                   .voltage(
                       m_appliedVoltage.mut_replace(
                           armMotor.get() * RobotController.getBatteryVoltage(), Volts))
@@ -126,12 +126,17 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void setArmDirection(String direction) {
     lastArmDirection = direction;
+
   }
 
   public boolean can_we_go_up() {
-    if (lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_UP_DIRECTION_STRING)) {
-      if (limitSwitchMag.get()) {
-        return false;
+    if (lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_UP_DIRECTION_STRING)) 
+    {if (limitSwitchBypass == false )
+      { 
+        if (limitSwitchMagUp.get()) 
+        {
+          return false;
+        }
       }
     }
     return true;
@@ -139,9 +144,14 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public boolean can_we_go_down() {
-    if (lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_DOWN_DIRECTION_STRING)) {
-      if (limitSwitchMag.get()) {
-        return false;
+    if (lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_DOWN_DIRECTION_STRING)) 
+    {
+      if (limitSwitchBypass == false)
+      {
+        if (limitSwitchMagDown.get()) 
+        {
+          return false;
+        }
       }
     }
     return true;
@@ -166,4 +176,10 @@ public class ArmSubsystem extends SubsystemBase {
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.dynamic(direction);
   }
+
+  public void  set_limit_switch_bypass( boolean bypassSetting)
+  {
+    limitSwitchBypass = bypassSetting; 
+  }
+
 }

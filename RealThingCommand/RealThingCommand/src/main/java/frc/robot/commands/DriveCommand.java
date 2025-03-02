@@ -49,7 +49,9 @@ public class DriveCommand extends Command {
   // around with it off, this is driver preference
   @Override
   public void execute() {
-    m_drive.driveArcade(m_xSpeed.getAsDouble(), m_zRotation.getAsDouble(), m_squared.getAsBoolean());
+    double modifier;
+    modifier = m_zRotation.getAsDouble() * -1;
+    m_drive.driveArcade(m_xSpeed.getAsDouble(),modifier, m_squared.getAsBoolean());
   }
 
   // Runs each time the command ends via isFinished or being interrupted.
