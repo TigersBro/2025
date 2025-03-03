@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.autos.AlgieAuto;
@@ -171,6 +172,7 @@ public class RobotContainer {
     
     m_driverController.button(DriveConstants.DRIVE_REVERSE_ROTATION_BUTTON_ID).toggleOnTrue(new InstantCommand( () -> m_drive.reverseRotation() ));
     m_driverController.button(DriveConstants.DRIVE_REVERSE_FRONT_BUTTON_ID).toggleOnTrue(new InstantCommand( () -> m_drive.reverseFront() ));
+    m_driverController.button(ArmConstants.ARM_OVERRIDE_BUTTON).toggleOnTrue(new InstantCommand( () -> m_arm.set_limit_switch_bypass(true) ));
 
 
     // * Here we declare all of our operator commands, these commands could have
