@@ -13,10 +13,10 @@ public class AlgieAuto extends Command {
     private RollerSubsystem m_roller;
     private ArmSubsystem m_arm;
     private Timer timer;
-    private double drive_seconds = 3.25;
-    private double turn_seconds = 4.5;
-    private double score_seconds = 5.5;
-    private double kobe = 6;
+    private double drive_seconds = 2.5;
+    private double turn_seconds = drive_seconds + .72;
+    private double score_seconds = turn_seconds + .75;
+    private double kobe = score_seconds + 1;
 
     /**
      * This auto will have the robot drive forwards, stop, then drop the coral into L1
@@ -75,7 +75,7 @@ public class AlgieAuto extends Command {
      */
     else if(timer.get() > drive_seconds && timer.get() < turn_seconds)
     {
-        m_drive.driveArcade(0.0, Constants.DriveConstants.SLOW_MODE_TURN,false);
+        m_drive.driveArcade(0.0, -Constants.DriveConstants.SUPER_SLOW_MODE_TURN,false);
     }
     //drive forward for a few moments to get the ball in scoring position
     else if (timer.get() > turn_seconds && timer.get() < score_seconds)

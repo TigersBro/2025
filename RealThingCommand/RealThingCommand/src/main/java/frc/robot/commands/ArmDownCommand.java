@@ -51,7 +51,7 @@ public class ArmDownCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_arm.can_we_go_down() )
+    //if (m_arm.can_we_go_down() )
     {
         m_arm.setArmDirection( ArmConstants.ARM_DOWN_DIRECTION_STRING);
       m_arm.runArm(m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN));
@@ -63,7 +63,7 @@ public class ArmDownCommand extends Command {
   // When the next command is caled it will override this command
   @Override
   public void end(boolean interrupted) {
-    m_arm.runArm(ArmConstants.ARM_HOLD_DOWN);
+    m_arm.runArm(0.01);
   }
 
   // Returns true when the command should end.

@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+//import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 
 /**
@@ -46,6 +47,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // The robot's subsystems and commands are defined here...
   // Replace with CommandPS4Controller or CommandJoystick if needed
+  //CameraServer.startAutomaticCapture(0);
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final CommandJoystick m_driverController = new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);
@@ -136,8 +138,9 @@ public class RobotContainer {
      * joystick matches the WPILib convention of counter-clockwise positive
      */
     m_drive.setDefaultCommand(new DriveCommand(m_drive,
-        () -> -m_driverController.getZ(),
+        
         () -> -m_driverController.getY(),
+        () -> -m_driverController.getZ(),
         () -> true));
 
     /**
@@ -152,8 +155,8 @@ public class RobotContainer {
      * When switching to single driver mode switch to the B button
      */
     m_driverController.button(2).whileTrue(new DriveCommand(m_drive,
-        () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
         () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,
+        () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
         () -> true));
 
     m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));

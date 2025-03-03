@@ -161,13 +161,20 @@ public class DriveSubsystem extends SubsystemBase {
    * @param squared do you square the inputs from the controller
    */
   public void driveArcade(double xSpeed, double zRotation, boolean squared) {
+    double zRotationToUse;
+    zRotationToUse = zRotation;
     if (reverseFront == true)
       xSpeed = xSpeed * -1;
     if (reverseRotation = true)
-      zRotation = zRotation * -1;
-
+      zRotationToUse = zRotation * -1;
+    
+    double deadband;
+    deadband = zRotation;
+    deadband = Math.abs(deadband); 
+    if (deadband < .2)
+       zRotationToUse = 0;
       //These seem to be flipped in the old code...we will see how it goes here: 
-    drive.arcadeDrive( xSpeed, zRotation, squared);
+    drive.arcadeDrive( xSpeed, zRotationToUse, squared);
   }
 
   /**

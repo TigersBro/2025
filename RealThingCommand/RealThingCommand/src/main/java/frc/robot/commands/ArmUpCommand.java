@@ -69,7 +69,7 @@ public class ArmUpCommand extends Command {
   @Override
   public void execute() {
    //ShuffleBoard9638.addString("button","arm up");
- if (m_arm.can_we_go_up() )
+ //if (m_arm.can_we_go_up() )
     {
       m_arm.setArmDirection( ArmConstants.ARM_UP_DIRECTION_STRING);
       m_arm.runArm(m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP));
@@ -83,7 +83,7 @@ public class ArmUpCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     
-      m_arm.runArm(ArmConstants.ARM_HOLD_UP);
+      m_arm.runArm(-.01);
   }
 
   // Returns true when the command should end.

@@ -130,10 +130,10 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public boolean can_we_go_up() {
-    if (lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_UP_DIRECTION_STRING)) 
+    //if (lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_UP_DIRECTION_STRING)) 
     {if (limitSwitchBypass == false )
       { 
-        if (limitSwitchMagUp.get()) 
+        if (limitSwitchMagUp.get() == true) 
         {
           return false;
         }
@@ -144,11 +144,11 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public boolean can_we_go_down() {
-    if (lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_DOWN_DIRECTION_STRING)) 
+  //  if (lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_DOWN_DIRECTION_STRING)) 
     {
       if (limitSwitchBypass == false)
       {
-        if (limitSwitchMagDown.get()) 
+        if (limitSwitchMagDown.get() == true) 
         {
           return false;
         }
