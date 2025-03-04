@@ -31,7 +31,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-//import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 
 /**
@@ -47,7 +48,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // The robot's subsystems and commands are defined here...
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  //CameraServer.startAutomaticCapture(0);
+  
+    UsbCamera camera = CameraServer.startAutomaticCapture();
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final CommandJoystick m_driverController = new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);

@@ -60,7 +60,7 @@ public class AlgieInCommand extends Command {
   // not running when not intented.
   @Override
   public void end(boolean interrupted) {
-    m_roller.runRoller(0);
+    m_roller.runRoller(-.05);
   }
 
   // Returns true when the command should end.
