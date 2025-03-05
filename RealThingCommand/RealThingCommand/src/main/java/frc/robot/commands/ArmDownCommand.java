@@ -20,6 +20,7 @@ public class ArmDownCommand extends Command {
   private static  GenericEntry m_maxSpeed ;
   private final double rampUpTime  = 2;
   private Timer rampTimer = new Timer(); 
+  private boolean isFinished = false;
   
   /**
    * Powers the arm down, when finished passively holds the arm down.
@@ -49,7 +50,12 @@ public class ArmDownCommand extends Command {
   }
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    
+    rampTimer.restart();
+    isFinished = false;
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -69,7 +75,14 @@ public class ArmDownCommand extends Command {
       m_arm.runArm(rampSpeed);
     
 
+      m_arm.runArm(rampSpeed);
+      isFinished  = false;
     }
+    else
+    {
+      isFinished = true;
+    }
+
   }
 
   // Called once the command ends or is interrupted.

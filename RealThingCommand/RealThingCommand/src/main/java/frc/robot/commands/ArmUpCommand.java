@@ -21,6 +21,7 @@ public class ArmUpCommand extends Command {
   private static GenericEntry m_holdArm;
   private final double rampUpTime  = 2;
   private Timer rampTimer = new Timer(); 
+  private boolean isFinished = false;
   /**
    * Powers the arm up, when finished passively holds the arm up.
    * 
@@ -71,6 +72,7 @@ public class ArmUpCommand extends Command {
       // start timer, uses restart to clear the timer as well in case this command has
       // already been run before
       rampTimer.restart();
+      isFinished = false;
 
   }
 
@@ -91,10 +93,14 @@ public class ArmUpCommand extends Command {
       }
 
       m_arm.runArm(rampSpeed);
-    
+      isFinished  = false;
     }
+    else
+    {
+      isFinished = true;
+    }
+  
   }
-
   // Called once the command ends or is interrupted.
   // Here we run a command that will hold the arm up after to ensure the arm does
   // not drop due to gravity.

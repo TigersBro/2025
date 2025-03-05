@@ -30,7 +30,7 @@ public final class Constants {
     public static final double SUPER_SLOW_MODE_TURN = 0.3;
     public static final double SLOW_MODE_TURN = 0.6;
 
-    public static final int DRIVE_REVERSE_FRONT_BUTTON_ID = 12;
+    public static final int DRIVE_REVERSE_FRONT_BUTTON_ID = 4;
     public static final int DRIVE_REVERSE_ROTATION_BUTTON_ID = 11;
   }
 
@@ -48,8 +48,8 @@ public final class Constants {
     public static final int ARM_MOTOR_ID = 6;
     public static final int ARM_MOTOR_CURRENT_LIMIT = 60;
     public static final double ARM_MOTOR_VOLTAGE_COMP = 10;
-    public static final double ARM_SPEED_DOWN = 0.25;
-    public static final double ARM_SPEED_UP = -0.25;
+    public static final double ARM_SPEED_DOWN = 0.35;
+    public static final double ARM_SPEED_UP = -0.35;
     public static final double ARM_HOLD_DOWN = -0.01;
     public static final double ARM_HOLD_UP = 0.025;
     public static final int ARM_LOWER_LIMIT_MAG_ID = 8;
