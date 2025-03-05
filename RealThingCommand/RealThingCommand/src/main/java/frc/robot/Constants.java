@@ -48,8 +48,8 @@ public final class Constants {
     public static final int ARM_MOTOR_ID = 6;
     public static final int ARM_MOTOR_CURRENT_LIMIT = 60;
     public static final double ARM_MOTOR_VOLTAGE_COMP = 10;
-    public static final double ARM_SPEED_DOWN = 0.4;
-    public static final double ARM_SPEED_UP = -0.4;
+    public static final double ARM_SPEED_DOWN = 0.25;
+    public static final double ARM_SPEED_UP = -0.25;
     public static final double ARM_HOLD_DOWN = -0.01;
     public static final double ARM_HOLD_UP = 0.025;
     public static final int ARM_LOWER_LIMIT_MAG_ID = 8;
