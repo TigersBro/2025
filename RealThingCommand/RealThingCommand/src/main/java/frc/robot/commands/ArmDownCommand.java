@@ -10,6 +10,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import java.util.Map;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -17,6 +18,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class ArmDownCommand extends Command {
   private final ArmSubsystem m_arm;
   private static  GenericEntry m_maxSpeed ;
+  private final double rampUpTime  = 2;
+  private Timer rampTimer = new Timer(); 
+  
   /**
    * Powers the arm down, when finished passively holds the arm down.
    * 
@@ -43,7 +47,6 @@ public class ArmDownCommand extends Command {
     }
 
   }
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -51,10 +54,21 @@ public class ArmDownCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //if (m_arm.can_we_go_down() )
+    if (m_arm.can_we_go(ArmConstants.ARM_DOWN_DIRECTION_STRING) )
     {
-        m_arm.setArmDirection( ArmConstants.ARM_DOWN_DIRECTION_STRING);
-      m_arm.runArm(m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN));
+      double rampSpeed; //linear ramping up of motor speed
+      if (rampTimer.get() < rampUpTime) 
+      { 
+       rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN) * (rampTimer.get() / rampUpTime);
+      }
+      else
+      {
+        rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN);
+      }
+
+      m_arm.runArm(rampSpeed);
+    
+
     }
   }
 
@@ -63,7 +77,7 @@ public class ArmDownCommand extends Command {
   // When the next command is caled it will override this command
   @Override
   public void end(boolean interrupted) {
-    m_arm.runArm(0.01);
+    m_arm.runArm(0.00);
   }
 
   // Returns true when the command should end.

@@ -59,6 +59,7 @@ public final class Constants {
     public static final String ARM_UP_DIRECTION_STRING = "UP";
     public static final int ARM_GEAR_RATIO = 4;
     public static final int ARM_OVERRIDE_BUTTON = 7;
+    public static final String ARM_NOT_SET = "NOTSET";
   }
 
   public static final class ClimberConstants {

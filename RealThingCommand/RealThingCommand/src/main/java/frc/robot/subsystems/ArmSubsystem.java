@@ -13,6 +13,7 @@ import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -22,6 +23,7 @@ import frc.robot.Constants.ArmConstants;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Volts;
+
 
 
 
@@ -36,9 +38,9 @@ public class ArmSubsystem extends SubsystemBase {
   boolean limitSwitchBypass;
   private final SparkMax armMotor;
   private final RelativeEncoder armEncoder;
-  public static String lastArmDirection = "NOTSET";
-
-
+  public static String lastArmDirection = ArmConstants.ARM_NOT_SET; //Starting condition
+  public static String lastUpLimitArmDirection = ArmConstants.ARM_NOT_SET; //Starting condition
+  public static String lastDownLimitArmDirection = ArmConstants.ARM_NOT_SET; //Starting condition
 
 /*  This is for the sysid routine */
   private final SysIdRoutine sysIdRoutine;
@@ -58,7 +60,7 @@ public class ArmSubsystem extends SubsystemBase {
   public ArmSubsystem() {
     limitSwitchBypass = false;
    // Set up the arm motor as a brushed motor
-    armMotor = new SparkMax(ArmConstants.ARM_MOTOR_ID, MotorType.kBrushless);
+    armMotor = new SparkMax(ArmConstants.ARM_MOTOR_ID, MotorType.kBrushed);
 
     // Set can timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
@@ -76,7 +78,21 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     armEncoder = armMotor.getEncoder();
     
+    Shuffleboard.getTab("Arm Info")
+    .addDouble("Arm Output Current", () -> armMotor.getOutputCurrent())
+    .withSize(2, 1);
+    Shuffleboard.getTab("Arm Info")
+        .addBoolean("Arm Upper Limit State", () ->  limitSwitchMagDown.get())
+        .withSize(2, 1);
+        Shuffleboard.getTab("Arm Info")
+            .addBoolean("Arm Lower Limit State", () -> limitSwitchMagDown.get())
+            .withSize(2, 1);
     
+      // Shuffleboard.getTab("Arm Info")
+      //     .addString("Arm Warnings", () ->armMotor.getWarnings().toString())
+      //     .withSize(2, 1);
+      
+      
     // Yikes...this is scary...
     sysIdRoutine =
     new SysIdRoutine(
@@ -111,6 +127,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void periodic() {
   }
 
+
   /**
    * This is a method that makes the arm move at your desired speed
    * Positive values make it spin forward and negative values spin it in reverse
@@ -118,9 +135,9 @@ public class ArmSubsystem extends SubsystemBase {
    * @param speed motor speed from -1.0 to 1, with 0 stopping it
    */
   public void runArm(double speed) {
-
-    armMotor.set(speed);
-    
+    //TODO...maybe put this in....if (armMotor.getOutputCurrent() < ArmConstants.ARM_MOTOR_CURRENT_LIMIT )
+    //store last Overcurrent and knock down the speed by 10% each time until it isn't 
+      armMotor.set(speed);
 
   }
 
@@ -129,34 +146,26 @@ public class ArmSubsystem extends SubsystemBase {
 
   }
 
-  public boolean can_we_go_up() {
-    //if (lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_UP_DIRECTION_STRING)) 
-    {if (limitSwitchBypass == false )
-      { 
-        if (limitSwitchMagUp.get() == true) 
-        {
-          return false;
-        }
+  public boolean can_we_go( String direction ) {
+  if (limitSwitchBypass == false && limitSwitchMagUp.get() == true && !lastArmDirection.equalsIgnoreCase(ArmConstants.ARM_NOT_SET))
+  { 
+      if (lastUpLimitArmDirection.equals(ArmConstants.ARM_NOT_SET) || lastUpLimitArmDirection.equals(direction))
+      {   
+         lastUpLimitArmDirection = direction;
+         return false;
       }
-    }
-    return true;
+          
+  }
+  if ( limitSwitchBypass == false && limitSwitchMagUp.get() == false )
+  {
+    lastArmDirection = direction;
+    lastUpLimitArmDirection = ArmConstants.ARM_NOT_SET;
+  }
+  
+   return true;
 
   }
 
-  public boolean can_we_go_down() {
-  //  if (lastArmDirection.equalsIgnoreCase(Constants.ArmConstants.ARM_DOWN_DIRECTION_STRING)) 
-    {
-      if (limitSwitchBypass == false)
-      {
-        if (limitSwitchMagDown.get() == true) 
-        {
-          return false;
-        }
-      }
-    }
-    return true;
-
-  }
 
   /**
    * Returns a command that will execute a quasistatic test in the given

@@ -12,14 +12,12 @@ import java.util.Map;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** A command to take Algae into the robot. */
 public class AlgieInCommand extends Command {
   private final RollerSubsystem m_roller;
     private static  GenericEntry m_maxSpeed ;
-  private WidgetType blah;
   /**
    * Rolls Algae into the intake.
    *

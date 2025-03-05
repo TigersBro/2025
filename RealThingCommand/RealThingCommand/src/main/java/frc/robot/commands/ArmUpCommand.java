@@ -10,6 +10,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import java.util.Map;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -18,7 +19,8 @@ public class ArmUpCommand extends Command {
   private final ArmSubsystem m_arm;
   private static GenericEntry m_maxSpeed;
   private static GenericEntry m_holdArm;
-
+  private final double rampUpTime  = 2;
+  private Timer rampTimer = new Timer(); 
   /**
    * Powers the arm up, when finished passively holds the arm up.
    * 
@@ -33,6 +35,8 @@ public class ArmUpCommand extends Command {
     addRequirements(arm);
     if (m_maxSpeed == null)
     {    
+
+      //These should be converted into paramaters passed in so we don't have to get them every time.
       m_maxSpeed
         =
             Shuffleboard.getTab("Configuration")
@@ -63,16 +67,30 @@ public class ArmUpCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+      // start timer, uses restart to clear the timer as well in case this command has
+      // already been run before
+      rampTimer.restart();
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   //ShuffleBoard9638.addString("button","arm up");
- //if (m_arm.can_we_go_up() )
+
+ if (m_arm.can_we_go(ArmConstants.ARM_UP_DIRECTION_STRING) )
     {
-      m_arm.setArmDirection( ArmConstants.ARM_UP_DIRECTION_STRING);
-      m_arm.runArm(m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP));
+      double rampSpeed; //linear ramping up of motor speed
+      if (rampTimer.get() < rampUpTime) 
+      { 
+       rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP) * (rampTimer.get() / rampUpTime);
+      }
+      else
+      {
+        rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP);
+      }
+
+      m_arm.runArm(rampSpeed);
     
     }
   }
@@ -83,7 +101,7 @@ public class ArmUpCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     
-      m_arm.runArm(-.01);
+      m_arm.runArm(0);
   }
 
   // Returns true when the command should end.

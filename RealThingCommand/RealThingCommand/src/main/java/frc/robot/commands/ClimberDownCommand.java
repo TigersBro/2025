@@ -37,6 +37,7 @@ public class ClimberDownCommand extends Command {
             .withProperties(Map.of("min", -1, "max", 0))
             .withSize(2, 1)
             .getEntry();
+            
     }
   }
 

@@ -76,6 +76,7 @@ public class RobotContainer {
     SmartDashboard.putData("Arm", m_arm);
     SmartDashboard.putData("Climber", m_climber); 
     SmartDashboard.putData("Roller", m_roller);
+    
 
     Shuffleboard.getTab("Commands").add("Algie In",new AlgieInCommand(m_roller));
     Shuffleboard.getTab("Commands").add("Algie Out",new AlgieOutCommand(m_roller));
