@@ -27,19 +27,31 @@ public class ClimberUpCommand extends Command {
   public ClimberUpCommand(ClimberSubsystem climber) {
     m_climber = climber;
     addRequirements(climber);
-    if (m_maxSpeed == null)
+
+    if (m_maxSpeed == null)  
     {
-      m_maxSpeed =
-          Shuffleboard.getTab("Configuration")
-              .add("Max Speed Climb Up", Constants.ClimberConstants.CLIMBER_SPEED_UP)
-              .withWidget("Number Slider")
-              // .withPosition(1, 1)
-              .withProperties(Map.of("min", 0, "max", 1))
-              .withSize(2, 1)
-              .getEntry();
-            }
+        m_maxSpeed =
+        Shuffleboard.getTab("Configuration")
+            .add("Max Speed Climb Up", Constants.ClimberConstants.CLIMBER_SPEED_UP)
+            .withWidget("Number Slider")
+            // .withPosition(1, 1)
+            .withProperties(Map.of("min", 0, "max", 1))
+            .withSize(2, 1)
+            .getEntry();
+            
     }
 
+    
+      // m_maxSpeed =
+      //     Shuffleboard.getTab("Configuration")
+      //         .add("Max Speed Climb Up", Constants.ClimberConstants.CLIMBER_SPEED_UP)
+      //         .withWidget("Number Slider")
+      //         // .withPosition(1, 1)
+      //         .withProperties(Map.of("min", 0, "max", 1))
+      //         .withSize(2, 1)
+      //         .getEntry();
+      //       }
+  }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
