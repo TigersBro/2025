@@ -84,9 +84,9 @@ public class ArmSubsystem extends SubsystemBase {
     Shuffleboard.getTab("Arm Info")
         .addBoolean("Arm Upper Limit State", () ->  limitSwitchMagDown.get())
         .withSize(2, 1);
-        Shuffleboard.getTab("Arm Info")
-            .addBoolean("Arm Lower Limit State", () -> limitSwitchMagDown.get())
-            .withSize(2, 1);
+        // Shuffleboard.getTab("Arm Info")
+        //     .addBoolean("Arm Lower Limit State", () -> limitSwitchMagDown.get())
+        //     .withSize(2, 1);
     
       // Shuffleboard.getTab("Arm Info")
       //     .addString("Arm Warnings", () ->armMotor.getWarnings().toString())
