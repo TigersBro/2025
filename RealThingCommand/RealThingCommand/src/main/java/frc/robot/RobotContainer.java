@@ -21,6 +21,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -68,6 +69,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     // Configure the trigger bindings
+    DataLogManager.start();
     configureBindings();
     CameraServer.startAutomaticCapture();
     DriverStation.silenceJoystickConnectionWarning(true);

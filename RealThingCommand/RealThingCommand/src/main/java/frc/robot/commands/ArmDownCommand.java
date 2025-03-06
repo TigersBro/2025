@@ -62,34 +62,44 @@ public class ArmDownCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_arm.can_we_go(ArmConstants.ARM_DOWN_DIRECTION_STRING) )
+    if( rampTimer.get() > ArmConstants.ARM_TIME_LIMIT )
     {
-      double timerVal = rampTimer.get();
-      double rampSpeed; //linear ramping up of motor speed
-      if (timerVal < rampUpTime) 
-      { 
-       rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN) * (timerVal / rampUpTime);
-      }
-      else if ( timerVal >= rampDownTime )
-      {
-        rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN) * rampDownTime / timerVal; 
-      }
-      else
-      {
-        rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN);
-      }
-
-      m_arm.runArm(rampSpeed);
-
-      isFinished  = false;
+      m_arm.runArm(ArmConstants.ARM_HOLD_DOWN);
+     
     }
     else
     {
-      isFinished = true;
-      //This will run at holding value...it is likely we are at the top of the throw...without this the arm will fall.
-      m_arm.runArm(ArmConstants.ARM_HOLD_DOWN);
-      isFinished = true;
+      m_arm.runArm(ArmConstants.ARM_SPEED_DOWN);
+      isFinished  = false;
     }
+    // if (m_arm.can_we_go(ArmConstants.ARM_DOWN_DIRECTION_STRING) )
+    // {
+    //   double timerVal = rampTimer.get();
+    //   double rampSpeed; //linear ramping up of motor speed
+    //   if (timerVal < rampUpTime) 
+    //   { 
+    //    rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN) * (timerVal / rampUpTime);
+    //   }
+    //   else if ( timerVal >= rampDownTime )
+    //   {
+    //     rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN) * rampDownTime / timerVal; 
+    //   }
+    //   else
+    //   {
+    //     rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN);
+    //   }
+
+    //   m_arm.runArm(rampSpeed);
+
+    //   isFinished  = false;
+    // }
+    // else
+    // {
+    //   isFinished = true;
+    //   //This will run at holding value...it is likely we are at the top of the throw...without this the arm will fall.
+    //   m_arm.runArm(ArmConstants.ARM_HOLD_DOWN);
+    //   isFinished = true;
+    // }
 
   }
 
@@ -98,7 +108,8 @@ public class ArmDownCommand extends Command {
   // When the next command is caled it will override this command
   @Override
   public void end(boolean interrupted) {
-    m_arm.runArm(0.00);
+    m_arm.runArm(ArmConstants.ARM_HOLD_DOWN);
+
   }
 
   // Returns true when the command should end.

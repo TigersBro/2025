@@ -50,8 +50,8 @@ public final class Constants {
     public static final double ARM_MOTOR_VOLTAGE_COMP = 10;
     public static final double ARM_SPEED_DOWN = 3.2;
     public static final double ARM_SPEED_UP = -3.2;
-    public static final double ARM_HOLD_DOWN = -1;
-    public static final double ARM_HOLD_UP = 1;
+    public static final double ARM_HOLD_DOWN = 1;
+    public static final double ARM_HOLD_UP = -1;
     public static final int ARM_LOWER_LIMIT_MAG_ID = 8;
     public static final int ARM_UPPER_LIMIT_MAG_ID = 9;
     public static final int ARM_MOTOR_STOP = 0;
@@ -60,6 +60,7 @@ public final class Constants {
     public static final int ARM_GEAR_RATIO = 1;
     public static final int ARM_OVERRIDE_BUTTON = 7;
     public static final String ARM_NOT_SET = "NOTSET";
+    public static final double ARM_TIME_LIMIT = 2;
   }
 
   public static final class ClimberConstants {

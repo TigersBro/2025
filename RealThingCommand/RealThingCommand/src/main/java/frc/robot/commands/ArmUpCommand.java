@@ -8,8 +8,13 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 import java.util.Map;
+import java.util.logging.LogManager;
+import java.util.logging.LogRecord;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -81,33 +86,42 @@ public class ArmUpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
- if (m_arm.can_we_go(ArmConstants.ARM_UP_DIRECTION_STRING) )
-    {
+  // if (m_arm.can_we_go(ArmConstants.ARM_UP_DIRECTION_STRING) )
+  //   {
       double rampSpeed; //linear ramping up of motor speed
       double timerVal = rampTimer.get();
-      if (timerVal < rampUpTime) 
-      { 
-       rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP) * (rampTimer.get() / rampUpTime);
-      }
-      else if ( timerVal >= rampDownTime )
+      // if (timerVal < rampUpTime) 
+      // { 
+       
+      //  rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP) * (rampTimer.get() / rampUpTime);
+       
+      // }
+      // else 
+      // if ( timerVal >= rampDownTime )
+      // {
+      //   rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_HOLD_UP) ; 
+      // }
+      // else
+      // {
+      //   rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP);
+      // }
+      if( rampTimer.get() > ArmConstants.ARM_TIME_LIMIT )
       {
-        rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP) * rampDownTime / rampTimer.get(); 
+        m_arm.runArm(ArmConstants.ARM_HOLD_UP);
+       
       }
       else
       {
-        rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP);
+        m_arm.runArm(ArmConstants.ARM_SPEED_UP);
+        isFinished  = false;
       }
-
-      m_arm.runArm(rampSpeed);
-      isFinished  = false;
-    }
-    else
-    {
-      //This will run at holding value...it is likely we are at the top of the throw...without this the arm will fall.
-      m_arm.runArm(ArmConstants.ARM_HOLD_UP);
-      isFinished = true;
-    }
+    // }
+    // else
+    // {
+    //   //This will run at holding value...it is likely we are at the top of the throw...without this the arm will fall.
+    //   m_arm.runArm(ArmConstants.ARM_HOLD_UP);
+    //   isFinished = true;
+    // }
   
   }
   // Called once the command ends or is interrupted.
@@ -116,7 +130,8 @@ public class ArmUpCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     
-      m_arm.runArm(0);
+      
+    m_arm.runArm(ArmConstants.ARM_HOLD_UP);
   }
 
   // Returns true when the command should end.

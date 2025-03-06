@@ -1,9 +1,13 @@
 package frc.robot.autos;
 
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.RollerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
@@ -14,7 +18,7 @@ public class AlgieAuto extends Command {
     private ArmSubsystem m_arm;
     private Timer timer;
     private double drive_seconds = 2.5;
-    private double turn_seconds = drive_seconds + .72;
+    private double turn_seconds = drive_seconds + .95;
     private double score_seconds = turn_seconds + .75;
     private double kobe = score_seconds + 1;
 
@@ -44,6 +48,16 @@ public class AlgieAuto extends Command {
         addRequirements(m_drive);
         addRequirements(m_roller);
         addRequirements(m_arm);
+
+    //          Shuffleboard.getTab("Configuration")
+    //         .add("Algie Auto", .85)
+    //         .withWidget("Number Slider")
+    //         // .withPosition(1, 1)
+    //         .withProperties(Map.of("min", 0, "max", 1.5))
+        
+    //         .withSize(2, 1)
+    //         .getEntry();
+    // 
     }
 
     @Override
