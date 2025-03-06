@@ -137,7 +137,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void runArm(double speed) {
     //TODO...maybe put this in....if (armMotor.getOutputCurrent() < ArmConstants.ARM_MOTOR_CURRENT_LIMIT )
     //store last Overcurrent and knock down the speed by 10% each time until it isn't 
-      armMotor.set(speed);
+      armMotor.setVoltage(speed);
 
   }
 
