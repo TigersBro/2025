@@ -146,24 +146,30 @@ public class ArmSubsystem extends SubsystemBase {
 
   }
 
-  public boolean can_we_go( String direction ) {
-  boolean magState =  limitSwitchMagUp.get();
-  if (limitSwitchBypass == false && magState == true && !lastArmDirection.equalsIgnoreCase(ArmConstants.ARM_NOT_SET))
-  { 
-      if (lastUpLimitArmDirection.equals(ArmConstants.ARM_NOT_SET) || lastUpLimitArmDirection.equals(direction))
-      {   
-         lastUpLimitArmDirection = direction;
-         return false;
-      }
-          
-  }
-  if ( limitSwitchBypass == false && magState == false )
+  public boolean can_we_go( String direction ) 
   {
-    lastArmDirection = direction;
-    lastUpLimitArmDirection = ArmConstants.ARM_NOT_SET;
-  }
-  
-   return true;
+    if (limitSwitchBypass == true)
+    {
+      return true;
+    }
+
+    boolean magState =  limitSwitchMagUp.get();
+    if (  magState == true && !lastArmDirection.equalsIgnoreCase(ArmConstants.ARM_NOT_SET))
+    { 
+        if (lastUpLimitArmDirection.equals(ArmConstants.ARM_NOT_SET) || lastUpLimitArmDirection.equals(direction))
+        {   
+          lastUpLimitArmDirection = direction;
+          return false;
+        }
+            
+    }
+    if (magState == false )
+    {
+      lastArmDirection = direction;
+      lastUpLimitArmDirection = ArmConstants.ARM_NOT_SET;
+    }
+    
+    return true;
 
   }
 

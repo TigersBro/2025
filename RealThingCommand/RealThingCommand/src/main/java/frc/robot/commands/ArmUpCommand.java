@@ -19,8 +19,8 @@ public class ArmUpCommand extends Command {
   private final ArmSubsystem m_arm;
   private static GenericEntry m_maxSpeed;
   private static GenericEntry m_holdArm;
-  private final double rampUpTime  = 2;
-  private final double rampDownTime  = 4;
+  private final double rampUpTime  = 1;
+  private final double rampDownTime  = 3.5;
   private Timer rampTimer = new Timer(); 
   @SuppressWarnings("unused")
   private boolean isFinished = false;
