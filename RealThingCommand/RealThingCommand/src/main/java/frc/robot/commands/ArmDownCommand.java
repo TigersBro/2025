@@ -19,7 +19,9 @@ public class ArmDownCommand extends Command {
   private final ArmSubsystem m_arm;
   private static  GenericEntry m_maxSpeed ;
   private final double rampUpTime  = 2;
+  private final double rampDownTime  = 4;
   private Timer rampTimer = new Timer(); 
+  @SuppressWarnings("unused")
   private boolean isFinished = false;
   
   /**
@@ -62,10 +64,15 @@ public class ArmDownCommand extends Command {
   public void execute() {
     if (m_arm.can_we_go(ArmConstants.ARM_DOWN_DIRECTION_STRING) )
     {
+      double timerVal = rampTimer.get();
       double rampSpeed; //linear ramping up of motor speed
-      if (rampTimer.get() < rampUpTime) 
+      if (timerVal < rampUpTime) 
       { 
-       rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN) * (rampTimer.get() / rampUpTime);
+       rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN) * (timerVal / rampUpTime);
+      }
+      else if ( timerVal >= rampDownTime )
+      {
+        rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_DOWN) * rampDownTime / timerVal; 
       }
       else
       {
@@ -73,13 +80,14 @@ public class ArmDownCommand extends Command {
       }
 
       m_arm.runArm(rampSpeed);
-    
 
-      m_arm.runArm(rampSpeed);
       isFinished  = false;
     }
     else
     {
+      isFinished = true;
+      //This will run at holding value...it is likely we are at the top of the throw...without this the arm will fall.
+      m_arm.runArm(ArmConstants.ARM_HOLD_DOWN);
       isFinished = true;
     }
 

@@ -20,7 +20,9 @@ public class ArmUpCommand extends Command {
   private static GenericEntry m_maxSpeed;
   private static GenericEntry m_holdArm;
   private final double rampUpTime  = 2;
+  private final double rampDownTime  = 4;
   private Timer rampTimer = new Timer(); 
+  @SuppressWarnings("unused")
   private boolean isFinished = false;
   /**
    * Powers the arm up, when finished passively holds the arm up.
@@ -83,9 +85,14 @@ public class ArmUpCommand extends Command {
  if (m_arm.can_we_go(ArmConstants.ARM_UP_DIRECTION_STRING) )
     {
       double rampSpeed; //linear ramping up of motor speed
-      if (rampTimer.get() < rampUpTime) 
+      double timerVal = rampTimer.get();
+      if (timerVal < rampUpTime) 
       { 
        rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP) * (rampTimer.get() / rampUpTime);
+      }
+      else if ( timerVal >= rampDownTime )
+      {
+        rampSpeed = m_maxSpeed.getDouble(ArmConstants.ARM_SPEED_UP) * rampDownTime / rampTimer.get(); 
       }
       else
       {
@@ -97,6 +104,8 @@ public class ArmUpCommand extends Command {
     }
     else
     {
+      //This will run at holding value...it is likely we are at the top of the throw...without this the arm will fall.
+      m_arm.runArm(ArmConstants.ARM_HOLD_UP);
       isFinished = true;
     }
   
