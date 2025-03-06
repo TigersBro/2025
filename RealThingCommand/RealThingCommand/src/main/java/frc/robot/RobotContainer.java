@@ -49,7 +49,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // Replace with CommandPS4Controller or CommandJoystick if needed
   
-    UsbCamera camera = CameraServer.startAutomaticCapture();
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final CommandJoystick m_driverController = new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);
@@ -70,6 +69,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    CameraServer.startAutomaticCapture();
     DriverStation.silenceJoystickConnectionWarning(true);
     
     SmartDashboard.putData("Drive",m_drive);
