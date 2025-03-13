@@ -149,7 +149,7 @@ public class RobotContainer {
     m_drive.setDefaultCommand(new DriveCommand(m_drive,
         
         () -> -m_driverController.getY(),
-        () -> -m_driverController.getZ(),
+        () -> -m_driverController.getZ() ,
         () -> true));
 
     /**
@@ -163,10 +163,13 @@ public class RobotContainer {
      * 
      * When switching to single driver mode switch to the B button
      */
-    m_driverController.button(2).whileTrue(new DriveCommand(m_drive,
-        () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,
-        () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
-        () -> true));
+    m_driverController.button(DriveConstants.THUMB_TRIGGER).toggleOnTrue(new InstantCommand( () -> m_drive.speedToggle() ));
+   
+  //  Commented out to make a toggle versus a hold
+    //  m_driverController.button(Constants.DriveConstants.THUMB_TRIGGER).whileTrue(new DriveCommand(m_drive,
+    //     () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,
+    //     () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
+    //     () -> true));
 
     m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));
     m_operatorController.R2().whileTrue(new AlgieOutCommand(m_roller));

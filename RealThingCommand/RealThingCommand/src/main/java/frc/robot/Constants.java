@@ -32,6 +32,8 @@ public final class Constants {
 
     public static final int DRIVE_REVERSE_FRONT_BUTTON_ID = 4;
     public static final int DRIVE_REVERSE_ROTATION_BUTTON_ID = 11;
+    public static final int THUMB_TRIGGER = 2;
+    public static final double TURN_MULTIPLIER = .8333;
   }
 
   public static final class RollerConstants {

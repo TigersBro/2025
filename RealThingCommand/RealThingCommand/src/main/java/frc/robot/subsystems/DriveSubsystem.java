@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 import static edu.wpi.first.units.Units.Meters;
@@ -38,6 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final DifferentialDrive drive;
   private boolean reverseRotation;
   private boolean reverseFront;
+  private boolean speedToggle;
 
   private final SysIdRoutine sysIdRoutine;
   private final MutVoltage m_appliedVoltage = Volts.mutable(0);
@@ -53,6 +55,7 @@ public class DriveSubsystem extends SubsystemBase {
     
     reverseRotation = false;
     reverseFront = false;
+    speedToggle = false;
 
     leftLeader = new SparkMax(DriveConstants.LEFT_LEADER_ID, MotorType.kBrushed);
     leftFollower = new SparkMax(DriveConstants.LEFT_FOLLOWER_ID, MotorType.kBrushed);
@@ -164,16 +167,31 @@ public class DriveSubsystem extends SubsystemBase {
     double zRotationToUse;
     zRotationToUse = zRotation;
     if (reverseFront == true)
+    {
       xSpeed = xSpeed * -1;
-    if (reverseRotation = true)
+    }
+    if (reverseRotation == true)
+    {
       zRotationToUse = zRotation * -1;
+    }
     
     double deadband;
     deadband = zRotation;
     deadband = Math.abs(deadband); 
     if (deadband < .2)
-       zRotationToUse = 0;
-      //These seem to be flipped in the old code...we will see how it goes here: 
+    {
+         zRotationToUse = 0;
+    }
+    
+    if ( speedToggle == true )
+    {
+      xSpeed = xSpeed *  DriveConstants.SLOW_MODE_MOVE;
+      zRotationToUse = zRotationToUse * DriveConstants.SLOW_MODE_TURN;
+    }
+    else
+    {
+      zRotationToUse = zRotationToUse * Constants.DriveConstants.TURN_MULTIPLIER;
+    }
     drive.arcadeDrive( xSpeed, zRotationToUse, squared);
   }
 
@@ -221,5 +239,14 @@ public class DriveSubsystem extends SubsystemBase {
       reverseFront = false;
     else
       reverseFront = true; 
+  }
+  public void speedToggle()
+  {
+    if( speedToggle == true)
+      speedToggle = false;
+    else
+      speedToggle = true;
+
+
   }
 }
