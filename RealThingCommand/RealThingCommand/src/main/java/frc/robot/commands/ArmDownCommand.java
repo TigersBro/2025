@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class ArmDownCommand extends Command {
   private final ArmSubsystem m_arm;
   private static  GenericEntry m_maxSpeed ;
-  private final double rampUpTime  = 1;
-  private final double rampDownTime  = 2.5;
+  // private final double rampUpTime  = 1;
+  // private final double rampDownTime  = 2.5;
   private Timer rampTimer = new Timer(); 
   @SuppressWarnings("unused")
   private boolean isFinished = false;

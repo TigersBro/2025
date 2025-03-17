@@ -8,13 +8,8 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
 import java.util.Map;
-import java.util.logging.LogManager;
-import java.util.logging.LogRecord;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.StringLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,8 +19,8 @@ public class ArmUpCommand extends Command {
   private final ArmSubsystem m_arm;
   private static GenericEntry m_maxSpeed;
   private static GenericEntry m_holdArm;
-  private final double rampUpTime  = 1;
-  private final double rampDownTime  = 2.5;
+  // private final double rampUpTime  = 1;
+  // private final double rampDownTime  = 2.5;
   private Timer rampTimer = new Timer(); 
   @SuppressWarnings("unused")
   private boolean isFinished = false;
@@ -88,8 +83,8 @@ public class ArmUpCommand extends Command {
   public void execute() {
   // if (m_arm.can_we_go(ArmConstants.ARM_UP_DIRECTION_STRING) )
   //   {
-      double rampSpeed; //linear ramping up of motor speed
-      double timerVal = rampTimer.get();
+      // double rampSpeed; //linear ramping up of motor speed
+      // double timerVal = rampTimer.get();
       // if (timerVal < rampUpTime) 
       // { 
        

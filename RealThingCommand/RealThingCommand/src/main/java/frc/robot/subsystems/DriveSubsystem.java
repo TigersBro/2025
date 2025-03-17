@@ -53,8 +53,8 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     // create brushed motors for drive
     
-    reverseRotation = false;
-    reverseFront = false;
+    reverseRotation = true;
+    reverseFront = true;
     speedToggle = false;
 
     leftLeader = new SparkMax(DriveConstants.LEFT_LEADER_ID, MotorType.kBrushless);

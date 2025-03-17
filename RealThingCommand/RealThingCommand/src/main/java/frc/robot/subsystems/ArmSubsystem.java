@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -12,8 +13,10 @@ import edu.wpi.first.units.measure.MutDistance;
 import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -41,6 +44,9 @@ public class ArmSubsystem extends SubsystemBase {
   public static String lastArmDirection = ArmConstants.ARM_NOT_SET; //Starting condition
   public static String lastUpLimitArmDirection = ArmConstants.ARM_NOT_SET; //Starting condition
   public static String lastDownLimitArmDirection = ArmConstants.ARM_NOT_SET; //Starting condition
+
+  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
 /*  This is for the sysid routine */
   private final SysIdRoutine sysIdRoutine;
@@ -198,4 +204,17 @@ public class ArmSubsystem extends SubsystemBase {
     limitSwitchBypass = bypassSetting; 
   }
 
+
+  public boolean is_ball_in()
+  {
+    Color detectedColor =  m_colorSensor.getColor();
+    if ( detectedColor.green > 200 )
+    {
+      return true;
+    }
+    else 
+    {
+      return false;
+    }
+  }
 }
