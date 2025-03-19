@@ -107,7 +107,14 @@ public class ClimberSubsystem extends SubsystemBase {
      * @param speed motor speed from -1.0 to 1, with 0 stopping it
      */
     public void runClimber(double speed){
-      if (climberLimit.get() == true && limitBypass == false )
+      if( limitBypass == true)
+        {
+          //climbMotorleft.set(speed);
+          climbMotorleft.set(speed);
+          return;
+        }
+      if (climberLimit.get() 
+       )
        {
 
         if (speed < 0) { 
