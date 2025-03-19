@@ -77,6 +77,7 @@ public final class Constants {
     public static final int CLIMBER_ENCODER_1 = 1;
     public static final int CLIMBER_ENCODER_2 = 2;
     public static final int CLIMBER_LIMIT_ID = 5;
+    public static final int CLIMB_OVERRIDE_BUTTON = 8;
   }
 
   public static final class OperatorConstants {

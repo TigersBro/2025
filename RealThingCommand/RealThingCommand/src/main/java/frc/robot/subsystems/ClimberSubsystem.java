@@ -31,14 +31,14 @@ public class ClimberSubsystem extends SubsystemBase {
     private final MutVoltage m_appliedVoltage = Volts.mutable(0);
     private final MutDistance m_distance = Meters.mutable(0);
     private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
-
+    private boolean limitBypass; 
  DigitalInput climberLimit = new DigitalInput(Constants.ClimberConstants.CLIMBER_LIMIT_ID);
 
     /**
      * This subsytem that controls the climber.
      */
     public ClimberSubsystem () {
-
+    limitBypass = false;
     // Set up the climb motor as a brushless motor
     climbMotorleft = new SparkMax(ClimberConstants.CLIMBER_leftwinch_MOTOR_ID, MotorType.kBrushed);
     climbMotorright = new SparkMax(ClimberConstants.CLIMBER_rightwinch_MOTOR_ID, MotorType.kBrushed);
@@ -107,13 +107,14 @@ public class ClimberSubsystem extends SubsystemBase {
      * @param speed motor speed from -1.0 to 1, with 0 stopping it
      */
     public void runClimber(double speed){
-      if (climberLimit.get() == true)
+      if (climberLimit.get() == true && limitBypass == false )
        {
 
-        if (speed < 0) { climbMotorleft.set(speed);
-  
+        if (speed < 0) { 
+          climbMotorleft.set(speed);
         }
-        else {climbMotorleft.set(0);}
+        else {
+          climbMotorleft.set(0);}
        
       }
       else climbMotorleft.set(speed);
@@ -137,5 +138,10 @@ public class ClimberSubsystem extends SubsystemBase {
    */
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.dynamic(direction);
+  }
+
+  public void  set_limit_switch_bypass(){
+    limitBypass = true;
+
   }
 }
