@@ -113,8 +113,7 @@ public class ClimberSubsystem extends SubsystemBase {
           climbMotorleft.set(speed);
           return;
         }
-      if (climberLimit.get() 
-       )
+      if (climberLimit.get() )
        {
 
         if (speed < 0) { 
