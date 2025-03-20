@@ -64,7 +64,7 @@ public class RobotContainer {
   public final ClimberSubsystem m_climber = new ClimberSubsystem();
 
   public final SimpleCoralAuto m_simpleCoralAuto = new SimpleCoralAuto(m_drive, m_roller, m_arm);
-  public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive);
+  public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive, m_climber);
   public final AlgieAuto m_algieAuto = new AlgieAuto(m_drive, m_roller, m_arm);
 
   public RobotContainer() {

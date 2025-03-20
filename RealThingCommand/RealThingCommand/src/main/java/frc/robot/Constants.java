@@ -25,10 +25,10 @@ public final class Constants {
 
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
     public static final double DRIVE_MOTOR_VOLTAGE_COMP = 12;
-    public static final double SLOW_MODE_MOVE = 0.5;
+    public static final double SLOW_MODE_MOVE = 0.55;
     public static final double SUPER_SLOW_MODE_MOVE = 0.3;
     public static final double SUPER_SLOW_MODE_TURN = 0.3;
-    public static final double SLOW_MODE_TURN = 0.6;
+    public static final double SLOW_MODE_TURN = 0.65;
 
     public static final int DRIVE_REVERSE_FRONT_BUTTON_ID = 4;
     public static final int DRIVE_REVERSE_ROTATION_BUTTON_ID = 11;

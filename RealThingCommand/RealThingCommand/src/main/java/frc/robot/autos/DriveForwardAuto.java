@@ -3,11 +3,15 @@ package frc.robot.autos;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.Constants;
 
 public class DriveForwardAuto extends Command {
     private DriveSubsystem m_drive;
+    private ClimberSubsystem m_climber;
     private Timer timer;
     private double drive_seconds = 3.25;
+    private double climber_seconds = 5;
 
       /**
      * This auto will have the robot drive forwards
@@ -23,10 +27,10 @@ public class DriveForwardAuto extends Command {
      * 
      * @param drive
      */
-    public DriveForwardAuto(DriveSubsystem drive)
+    public DriveForwardAuto(DriveSubsystem drive, ClimberSubsystem climber )
     {
         m_drive = drive;
-        
+        m_climber = climber;
         timer = new Timer();
 
         addRequirements(m_drive);
@@ -46,6 +50,11 @@ public class DriveForwardAuto extends Command {
     if(timer.get() < drive_seconds)
     {
         m_drive.driveArcade(0.3, 0.0,false);
+    }
+    if (timer.get() < climber_seconds)
+    {
+      
+      m_climber.runClimber(Constants.ClimberConstants.CLIMBER_SPEED_DOWN);
     }
   }
 
