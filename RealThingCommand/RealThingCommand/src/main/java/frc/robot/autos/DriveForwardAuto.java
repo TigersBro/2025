@@ -60,6 +60,8 @@ public class DriveForwardAuto extends Command {
       
       m_climber.runClimber(Constants.ClimberConstants.CLIMBER_SPEED_DOWN);
     }
+    else {    m_climber.runClimber(0);
+    }
   }
 
   // Runs each time the command ends via isFinished or being interrupted.
@@ -68,6 +70,8 @@ public class DriveForwardAuto extends Command {
     // stop drive motors
     m_drive.driveArcade(0.0, 0.0, false);
     timer.stop();
+
+    m_climber.runClimber(0);
   }
 
   // Runs every cycle while the command is scheduled to check if the command is
