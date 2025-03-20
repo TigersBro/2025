@@ -34,6 +34,7 @@ public class DriveForwardAuto extends Command {
         timer = new Timer();
 
         addRequirements(m_drive);
+        addRequirements(m_climber);
     }
 
     @Override
@@ -50,6 +51,9 @@ public class DriveForwardAuto extends Command {
     if(timer.get() < drive_seconds)
     {
         m_drive.driveArcade(0.3, 0.0,false);
+    }
+    else{
+      m_drive.driveArcade(0, 0, false);
     }
     if (timer.get() < climber_seconds)
     {
