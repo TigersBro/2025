@@ -165,7 +165,8 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void driveArcade(double xSpeed, double zRotation, boolean squared) {
     double zRotationToUse;
-    zRotationToUse = zRotation;
+    zRotationToUse = zRotation *.7;
+    xSpeed = xSpeed *.8;
     if (reverseFront == true)
     {
       xSpeed = xSpeed * -1;

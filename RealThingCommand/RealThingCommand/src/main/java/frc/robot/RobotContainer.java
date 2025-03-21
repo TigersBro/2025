@@ -180,7 +180,14 @@ public class RobotContainer {
     m_operatorController.R1().whileTrue(new ArmDownCommand(m_arm));
 
     m_operatorController.pov(0).whileTrue(new ClimberUpCommand(m_climber));
+    m_operatorController.pov(45).whileTrue(new ClimberUpCommand(m_climber));
+    m_operatorController.pov(315).whileTrue(new ClimberUpCommand(m_climber));
+
+
     m_operatorController.pov(180).whileTrue(new ClimberDownCommand(m_climber));
+    m_operatorController.pov(225).whileTrue(new ClimberDownCommand(m_climber));
+    m_operatorController.pov(135).whileTrue(new ClimberDownCommand(m_climber));
+
 
     
     m_driverController.button(DriveConstants.DRIVE_REVERSE_ROTATION_BUTTON_ID).toggleOnTrue(new InstantCommand( () -> m_drive.reverseRotation() ));
