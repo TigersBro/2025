@@ -18,6 +18,7 @@ import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.ClimberDownCommand;
 import frc.robot.commands.ClimberUpCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -32,6 +33,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -52,6 +56,7 @@ public class RobotContainer {
   
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  SendableChooser<Command> m_DriveTypeChooser = new SendableChooser<>();
   private final CommandJoystick m_driverController = new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);
   // You can remove this if you wish to have a single driver, note that you
   // may have to change the binding for left bumper.
@@ -62,10 +67,15 @@ public class RobotContainer {
   public final ArmSubsystem m_arm = new ArmSubsystem();
   public final DriveSubsystem m_drive = new DriveSubsystem();
   public final ClimberSubsystem m_climber = new ClimberSubsystem();
+  public final DoubleSupplier m_doubleSupplier1;
+  public final DoubleSupplier m_doubleSupplier2;
+  public final BooleanSupplier m_booleanSupplier = new BooleanSupplier () -> true;
 
   public final SimpleCoralAuto m_simpleCoralAuto = new SimpleCoralAuto(m_drive, m_roller, m_arm);
   public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive, m_climber);
   public final AlgieAuto m_algieAuto = new AlgieAuto(m_drive, m_roller, m_arm);
+  public final TankDrive m_tankDrive = new TankDrive(m_drive, m_doubleSupplier1, m_doubleSupplier2, m_booleanSupplier);
+  public final DriveCommand m_arcadeDrive = new DriveCommand(m_drive, m_doubleSupplier1, m_doubleSupplier2, m_booleanSupplier);
 
   public RobotContainer() {
     // Configure the trigger bindings
@@ -95,6 +105,9 @@ public class RobotContainer {
     m_chooser.addOption("Algie Auto", m_algieAuto);
     m_chooser.addOption("Coral Auto",m_simpleCoralAuto);
     SmartDashboard.putData(m_chooser);
+
+    m_DriveTypeChooser.setDefaultOption("Arcade Drive", m_arcadeDrive);
+    m_DriveTypeChooser.addOption("Tank Drive", m_tankDrive);
 
 
         // Log Shuffleboard events for command initialize, execute, finish, interrupt
@@ -251,5 +264,10 @@ public class RobotContainer {
     
     // An example command will be run in autonomous
     return m_chooser.getSelected();
+  }
+  public Command getDriverCommand() {
+    
+    // An example command will be run in autonomous
+    return m_DriveTypeChooser.getSelected();
   }
 }

@@ -40,17 +40,16 @@ public class TankDrive extends Command {
   @Override
   public void execute() {
 
-
-
-
-
-
-    
+    //double modifier;
+    //modifier = m_zRotation.getAsDouble() * -1;
+    m_drive.driveTank(m_leftSpeed.getAsDouble(),m_rightSpeed.getAsDouble(), m_squared.getAsBoolean());
   }
+  
+
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {} 
 
   // Returns true when the command should end.
   @Override
