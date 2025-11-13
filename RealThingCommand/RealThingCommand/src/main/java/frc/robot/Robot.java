@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    m_driveCommand = m_robotContainer.getDriverCommand();
+     m_robotContainer.getDriverCommand();
 
 
 

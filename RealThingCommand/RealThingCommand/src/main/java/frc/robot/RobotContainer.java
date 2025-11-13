@@ -58,6 +58,8 @@ public class RobotContainer {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   SendableChooser<Command> m_DriveTypeChooser = new SendableChooser<>();
   private final CommandJoystick m_driverController = new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);
+  private final CommandPS5Controller m_driverController2 = new CommandPS5Controller(
+    OperatorConstants.OPERATOR_CONTROLLER_PORT2 );
   // You can remove this if you wish to have a single driver, note that you
   // may have to change the binding for left bumper.
   private final CommandPS5Controller m_operatorController = new CommandPS5Controller(
@@ -67,13 +69,14 @@ public class RobotContainer {
   public final ArmSubsystem m_arm = new ArmSubsystem();
   public final DriveSubsystem m_drive = new DriveSubsystem();
   public final ClimberSubsystem m_climber = new ClimberSubsystem();
-  public final DoubleSupplier m_doubleSupplier1;
-  public final DoubleSupplier m_doubleSupplier2;
-  public final BooleanSupplier m_booleanSupplier = new BooleanSupplier () -> true;
+  public final DoubleSupplier m_doubleSupplier1 = () -> 1.0;
+  public final DoubleSupplier m_doubleSupplier2 = () -> 1.0;
+  public final BooleanSupplier m_booleanSupplier = () -> true;
 
   public final SimpleCoralAuto m_simpleCoralAuto = new SimpleCoralAuto(m_drive, m_roller, m_arm);
   public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive, m_climber);
   public final AlgieAuto m_algieAuto = new AlgieAuto(m_drive, m_roller, m_arm);
+  
   public final TankDrive m_tankDrive = new TankDrive(m_drive, m_doubleSupplier1, m_doubleSupplier2, m_booleanSupplier);
   public final DriveCommand m_arcadeDrive = new DriveCommand(m_drive, m_doubleSupplier1, m_doubleSupplier2, m_booleanSupplier);
 
@@ -157,7 +160,10 @@ public class RobotContainer {
      * value). Similarly for the X axis where we need to flip the value so the
      * joystick matches the WPILib convention of counter-clockwise positive
      */
-    m_drive.setDefaultCommand(new DriveCommand(m_drive,
+
+
+     //TODO we need to fix this.
+    /*m_drive.setDefaultCommand(new DriveCommand(m_drive,
         
         () -> -m_driverController.getY(),
         () -> -m_driverController.getZ() ,
@@ -176,11 +182,6 @@ public class RobotContainer {
      */
     m_driverController.button(DriveConstants.THUMB_TRIGGER).toggleOnTrue(new InstantCommand( () -> m_drive.speedToggle() ));
    
-  //  Commented out to make a toggle versus a hold
-    //  m_driverController.button(Constants.DriveConstants.THUMB_TRIGGER).whileTrue(new DriveCommand(m_drive,
-    //     () -> -m_driverController.getY() * DriveConstants.SLOW_MODE_MOVE,
-    //     () -> -m_driverController.getZ() * DriveConstants.SLOW_MODE_TURN,
-    //     () -> true));
 
     m_operatorController.L2().whileTrue(new AlgieInCommand(m_roller));
     m_operatorController.R2().whileTrue(new AlgieOutCommand(m_roller));
@@ -265,9 +266,22 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return m_chooser.getSelected();
   }
-  public Command getDriverCommand() {
+  public void getDriverCommand() {
     
-    // An example command will be run in autonomous
-    return m_DriveTypeChooser.getSelected();
+    // Pick which kind of drive you want: Tank or Arcade.
+
+     if ( m_DriveTypeChooser.getSelected() instanceof TankDrive){
+      m_drive.setDefaultCommand(new DriveCommand(m_drive,        
+              () -> -m_driverController2.getLeftY(),
+              () -> -m_driverController2.getRightY(),
+              () -> true));
+     }
+     if ( m_DriveTypeChooser.getSelected() instanceof DriveCommand){
+          m_drive.setDefaultCommand(new DriveCommand(m_drive,            
+            () -> -m_driverController.getY(),
+            () -> -m_driverController.getZ() ,
+            () -> true));
+      }
+
   }
 }
