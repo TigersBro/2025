@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class TankDrive extends Command {
+public class TankDriveCommand extends Command {
 
   private final DoubleSupplier m_leftSpeed;
   private final DoubleSupplier m_rightSpeed;
@@ -20,7 +20,7 @@ public class TankDrive extends Command {
 
 
   /** Creates a new TankDrive. */
-  public TankDrive(DriveSubsystem driveSubsystem, 
+  public TankDriveCommand(DriveSubsystem driveSubsystem, 
       DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, BooleanSupplier squareInputs) {
         m_leftSpeed = leftSpeed;
         m_rightSpeed = rightSpeed;

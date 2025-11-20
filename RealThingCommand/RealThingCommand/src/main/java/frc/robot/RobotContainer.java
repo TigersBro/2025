@@ -18,7 +18,7 @@ import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.ClimberDownCommand;
 import frc.robot.commands.ClimberUpCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.TankDrive;
+import frc.robot.commands.TankDriveCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -57,13 +57,13 @@ public class RobotContainer {
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   SendableChooser<Command> m_DriveTypeChooser = new SendableChooser<>();
-  private final CommandJoystick m_driverController = new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);
+  private final CommandJoystick m_driverController = new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT0);
   private final CommandPS5Controller m_driverController2 = new CommandPS5Controller(
-    OperatorConstants.OPERATOR_CONTROLLER_PORT2 );
+    OperatorConstants.TANK_CONTROLLER_PORT2 );
   // You can remove this if you wish to have a single driver, note that you
   // may have to change the binding for left bumper.
   private final CommandPS5Controller m_operatorController = new CommandPS5Controller(
-      OperatorConstants.OPERATOR_CONTROLLER_PORT);
+      OperatorConstants.OPERATOR_CONTROLLER_PORT1);
 
   public final RollerSubsystem m_roller = new RollerSubsystem();
   public final ArmSubsystem m_arm = new ArmSubsystem();
@@ -77,7 +77,7 @@ public class RobotContainer {
   public final DriveForwardAuto m_driveForwardAuto = new DriveForwardAuto(m_drive, m_climber);
   public final AlgieAuto m_algieAuto = new AlgieAuto(m_drive, m_roller, m_arm);
   
-  public final TankDrive m_tankDrive = new TankDrive(m_drive, m_doubleSupplier1, m_doubleSupplier2, m_booleanSupplier);
+  public final TankDriveCommand m_tankDrive = new TankDriveCommand(m_drive, m_doubleSupplier1, m_doubleSupplier2, m_booleanSupplier);
   public final DriveCommand m_arcadeDrive = new DriveCommand(m_drive, m_doubleSupplier1, m_doubleSupplier2, m_booleanSupplier);
 
   public RobotContainer() {
@@ -111,7 +111,7 @@ public class RobotContainer {
 
     m_DriveTypeChooser.setDefaultOption("Arcade Drive", m_arcadeDrive);
     m_DriveTypeChooser.addOption("Tank Drive", m_tankDrive);
-
+    SmartDashboard.putData(m_DriveTypeChooser);
 
         // Log Shuffleboard events for command initialize, execute, finish, interrupt
 //     CommandScheduler.getInstance()
@@ -270,8 +270,8 @@ public class RobotContainer {
     
     // Pick which kind of drive you want: Tank or Arcade.
 
-     if ( m_DriveTypeChooser.getSelected() instanceof TankDrive){
-      m_drive.setDefaultCommand(new DriveCommand(m_drive,        
+     if ( m_DriveTypeChooser.getSelected() instanceof TankDriveCommand){
+      m_drive.setDefaultCommand(new TankDriveCommand(m_drive,        
               () -> -m_driverController2.getLeftY(),
               () -> -m_driverController2.getRightY(),
               () -> true));
