@@ -210,6 +210,9 @@ public class RobotContainer {
     m_driverController.button(ClimberConstants.CLIMB_OVERRIDE_BUTTON).toggleOnTrue(new InstantCommand( () -> m_climber.set_limit_switch_bypass() ));
 
 
+    m_driverController2.triangle().toggleOnTrue(new InstantCommand( () -> m_drive.reverseFront() ));
+
+
     // * Here we declare all of our operator commands, these commands could have
     // been
     // * written in a more compact manner but are left verbose so the intent is

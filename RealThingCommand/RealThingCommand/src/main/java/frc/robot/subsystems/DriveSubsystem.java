@@ -220,7 +220,10 @@ public class DriveSubsystem extends SubsystemBase {
     leftSpeedToUse = leftSpeedToUse *.8;
     rightSpeedToUse = rightSpeedToUse *.8;
     if (reverseFront == true)
-
+    {
+        leftSpeedToUse = -leftSpeedToUse;
+        rightSpeedToUse = -rightSpeedToUse;
+    }
     drive.tankDrive(leftSpeedToUse, rightSpeedToUse, squared);
   
   
