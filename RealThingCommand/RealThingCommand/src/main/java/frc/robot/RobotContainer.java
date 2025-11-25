@@ -272,8 +272,8 @@ public class RobotContainer {
 
      if ( m_DriveTypeChooser.getSelected() instanceof TankDriveCommand){
       m_drive.setDefaultCommand(new TankDriveCommand(m_drive,        
-              () -> -m_driverController2.getLeftY(),
-              () -> -m_driverController2.getRightY(),
+              () -> m_driverController2.getLeftY(),
+              () -> m_driverController2.getRightY(),
               () -> true));
      }
      if ( m_DriveTypeChooser.getSelected() instanceof DriveCommand){

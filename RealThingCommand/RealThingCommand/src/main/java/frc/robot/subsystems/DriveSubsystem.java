@@ -210,7 +210,24 @@ public class DriveSubsystem extends SubsystemBase {
    * @param squared do you square the inputs from the controller 
    */
   public void driveTank(double leftSpeed, double rightSpeed, boolean squared){
-    drive.tankDrive(leftSpeed, rightSpeed, squared);
+  double leftSpeedToUse;
+  double rightSpeedToUse;
+  leftSpeedToUse = leftSpeed;
+  rightSpeedToUse = rightSpeed;
+  
+    
+    
+    leftSpeedToUse = leftSpeedToUse *.8;
+    rightSpeedToUse = rightSpeedToUse *.8;
+    if (reverseFront == true)
+
+    drive.tankDrive(leftSpeedToUse, rightSpeedToUse, squared);
+  
+  
+  
+  
+  
+  
   }
 
   /**
